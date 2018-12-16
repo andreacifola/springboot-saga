@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="OrderService" />
+        <module name="PaymentService" />
+        <module name="SagaOrchestrator" />
+        <module name="StockService" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="OrderService" target="1.8" />
+      <module name="PaymentService" target="1.8" />
+      <module name="SagaOrchestrator" target="1.8" />
+      <module name="Springboot-saga" target="1.8" />
+      <module name="springboot-saga" target="1.8" />
+      <module name="StockService" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
