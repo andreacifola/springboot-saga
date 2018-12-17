@@ -21,4 +21,12 @@
       <module name="StockService" target="1.8" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="OrderService" options="-parameters" />
+      <module name="PaymentService" options="-parameters" />
+      <module name="SagaOrchestrator" options="-parameters" />
+      <module name="StockService" options="-parameters" />
+    </option>
+  </component>
 </project>
