@@ -21,20 +21,20 @@ public class OrderSagaTest {
         fixture.givenNoPriorActivity()
                 .whenPublishingA(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
                 .expectActiveSagas(1)
-                .expectDispatchedCommands(new DoPaymentCommand("Alice", "5555", "30$"));
+                .expectDispatchedCommands(new DoPaymentCommand("1sd3gg54", "Alice", "5555", "30$"));
     }
 
     @Test
     public void testStockUpdatingAfterPayment() throws Exception {
         fixture.givenAPublished(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .whenPublishingA(new PaymentDoneEvent("Alice", "5555", "30$"))
+                .whenPublishingA(new PaymentDoneEvent("1sd3gg54", "Alice", "5555", "30$"))
                 .expectDispatchedCommands(new UpdateStockCommand("45g4ds3", "shirt", "9876", 2));
     }
 
     @Test
     public void testEndSagaAfterStockUpdated() throws Exception {
         fixture.givenAPublished(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .andThenAPublished(new PaymentDoneEvent("Alice", "5555", "30$"))
+                .andThenAPublished(new PaymentDoneEvent("1sd3gg54", "Alice", "5555", "30$"))
                 .whenPublishingA(new StockUpdatedEvent("45g4ds3", "shirt", "9876", 2))
                 .expectActiveSagas(0)
                 .expectNoDispatchedCommands();

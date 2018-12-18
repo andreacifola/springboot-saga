@@ -39,6 +39,7 @@ public class OrderSaga {
      * @param event
      */
 
+
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void on(OrderCreatedEvent event) {
@@ -60,7 +61,7 @@ public class OrderSaga {
 
         System.out.println("\n----------------------------------- Execute Payment " + SagaOrchestratorApplication.sagaId + " -----------------------------------");
         SagaOrchestratorApplication.logger.info("Execute Payment " + SagaOrchestratorApplication.sagaId + "\n");
-        commandGateway.send(new DoPaymentCommand(event.getUser(), paymentId, event.getPrice()), new CommandCallback<DoPaymentCommand, Object>() {
+        commandGateway.send(new DoPaymentCommand(SagaOrchestratorApplication.accountId, event.getUser(), paymentId, event.getPrice()), new CommandCallback<DoPaymentCommand, Object>() {
             @Override
             public void onSuccess(CommandMessage<? extends DoPaymentCommand> commandMessage, Object o) {
                 System.out.println("---------------------------------- Payment Executed " + SagaOrchestratorApplication.sagaId + " -----------------------------------");
@@ -126,7 +127,7 @@ public class OrderSaga {
                 SagaOrchestratorApplication.logger.info("Abort Stock " + SagaOrchestratorApplication.sagaId + "\n");
                 System.out.println("\n----------------------------------------------- Compensate Payment and Order -----------------------------------------------");
 
-                commandGateway.send(new RefundPaymentCommand(event.getUser(), event.getPaymentId(), event.getAmount()));
+                commandGateway.send(new RefundPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
                 System.out.println("---------------------------------------------------- Payment Compensated ---------------------------------------------------");
                 SagaOrchestratorApplication.logger.info("Payment Compensated " + SagaOrchestratorApplication.sagaId + "\n");
 
