@@ -1,20 +1,19 @@
 package servicesagaorchestrator.saga;
 
-import com.example.demo.coreapi.*;
-import org.axonframework.test.saga.AnnotatedSagaTestFixture;
+import org.axonframework.test.saga.SagaTestFixture;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
+import servicesagaorchestrator.coreapi.*;
 
 
 public class OrderSagaTest {
 
-    private AnnotatedSagaTestFixture fixture;
+
+    private SagaTestFixture<OrderSaga> fixture;
 
     @Before
     public void setUp() throws Exception {
-        fixture = new AnnotatedSagaTestFixture<>(OrderSaga.class);
+        fixture = new SagaTestFixture<>(OrderSaga.class);
     }
 
     @Test
@@ -22,21 +21,21 @@ public class OrderSagaTest {
         fixture.givenNoPriorActivity()
                 .whenPublishingA(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
                 .expectActiveSagas(1)
-                .expectDispatchedCommandsEqualTo(new DoPaymentCommand("Alice", "5555", "30$"));
+                .expectDispatchedCommands(new DoPaymentCommand("1a23fv", "Alice", "5555", "30$"));
     }
 
     @Test
     public void testStockUpdatingAfterPayment() throws Exception {
         fixture.givenAPublished(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .whenPublishingA(new PaymentDoneEvent("Alice", "5555", "30$"))
-                .expectDispatchedCommandsEqualTo(new UpdateStockCommand("shirt", "9876", 2));
+                .whenPublishingA(new PaymentDoneEvent("1a23fv", "Alice", "5555", "30$"))
+                .expectDispatchedCommands(new UpdateStockCommand("45g4ds3", "shirt", "9876", 2));
     }
 
     @Test
     public void testEndSagaAfterStockUpdated() throws Exception {
         fixture.givenAPublished(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .andThenAPublished(new PaymentDoneEvent("Alice", "5555", "30$"))
-                .whenPublishingA(new StockUpdatedEvent("shirt", "9876", 2))
+                .andThenAPublished(new PaymentDoneEvent("1a23fv", "Alice", "5555", "30$"))
+                .whenPublishingA(new StockUpdatedEvent("45g4ds3", "shirt", "9876", 2))
                 .expectNoDispatchedCommands()
                 .expectActiveSagas(0);
     }

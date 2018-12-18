@@ -1,4 +1,4 @@
-package com.example.demo.coreapi
+package servicesagaorchestrator.coreapi
 
 import org.axonframework.commandhandling.TargetAggregateIdentifier
 

@@ -3,7 +3,6 @@ package servicesagaorchestrator.entities;
 
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class OrderEntity {
 
     private String orderID;
@@ -13,6 +12,11 @@ public class OrderEntity {
     private String price;
     //private String date;
     //private String hour;
+
+
+    public OrderEntity() {
+
+    }
 
     public OrderEntity(String orderID, String user, String article, Integer quantity, String price) {
         this.orderID = orderID;

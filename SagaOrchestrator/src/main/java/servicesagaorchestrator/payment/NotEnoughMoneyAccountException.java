@@ -1,5 +1,5 @@
 package servicesagaorchestrator.payment;
 
 
-public class NotEnoughMoneyAccountException extends Exception {
+public class NotEnoughMoneyAccountException extends NullPointerException {
 }

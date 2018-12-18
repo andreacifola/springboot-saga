@@ -1,7 +1,6 @@
 package servicesagaorchestrator.saga;
 
 
-import com.example.demo.coreapi.*;
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.saga.EndSaga;
@@ -9,14 +8,16 @@ import org.axonframework.eventhandling.saga.SagaEventHandler;
 import org.axonframework.eventhandling.saga.SagaLifecycle;
 import org.axonframework.eventhandling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
+import org.springframework.beans.factory.annotation.Autowired;
+import servicesagaorchestrator.SagaOrchestratorApplication;
+import servicesagaorchestrator.coreapi.*;
 
-import javax.inject.Inject;
 import java.util.UUID;
 
 @Saga
 public class OrderSaga {
 
-    @Inject //Spring boot does the injection automatically
+    @Autowired
     private transient CommandGateway commandGateway;
 
     private String orderId;
@@ -34,6 +35,7 @@ public class OrderSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void on(OrderCreatedEvent event) {
+        System.out.println("------------------------------------ Order Created " + SagaOrchestratorApplication.sagaId + " ------------------------------------");
         // Saga allows us to save the state and to pass this state from a service to another
         orderId = event.getOrderId();
         user = event.getUser();
@@ -49,14 +51,18 @@ public class OrderSaga {
 
         // We try to send the payment command...
         try {
-            commandGateway.sendAndWait(new DoPaymentCommand(event.getUser(), paymentId, event.getPrice()));
+            System.out.println("\n----------------------------------- Execute Payment " + SagaOrchestratorApplication.sagaId + " -----------------------------------");
+            commandGateway.sendAndWait(new DoPaymentCommand(SagaOrchestratorApplication.orderId, event.getUser(), paymentId, event.getPrice()));
+            System.out.println("---------------------------------- Payment Executed " + SagaOrchestratorApplication.sagaId + " -----------------------------------");
 
-        } catch (CommandExecutionException e) {
+        } catch (Exception e) {
 
             // ... But if something goes wrong with the payment, we have to compensate the order command done before
-            if (NotEnoughMoneyAccountException.class.isInstance(e.getCause())) {
+            if (e.getCause() instanceof NotEnoughMoneyAccountException) {
+                System.out.println("-------------------- Not enough money: Compensate the Order -------------------");
                 commandGateway.send(new DeleteOrderCommand(event.getOrderId(),
                         event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
+                System.out.println("------------------------------- Order Compensated -----------------------------");
             }
         }
     }
@@ -70,16 +76,22 @@ public class OrderSaga {
 
         // We try to send the updating stock command...
         try {
-            commandGateway.sendAndWait(new UpdateStockCommand(article, stockId, quantity));
+            System.out.println("\n------------------------------------ Update Stock " + SagaOrchestratorApplication.sagaId + " ------------------------------------");
+            commandGateway.sendAndWait(new UpdateStockCommand(SagaOrchestratorApplication.stockId, article, stockId, quantity));
+            System.out.println("------------------------------------ Stock Updated " + SagaOrchestratorApplication.sagaId + " ------------------------------------");
 
         } catch (CommandExecutionException e) {
 
             // ... But if something goes wrong with the payment, we have to
             //     compensate both the payment command and the order command done before
-            if (NotEnoughMoneyAccountException.class.isInstance(e.getCause())) {
-                commandGateway.send(new RefundPaymentCommand(event.getUser(), event.getPaymentId(), event.getAmount()));
+            if (e.getCause() instanceof NotEnoughMoneyAccountException) {
+                System.out.println("--------- Not enough articles in the stock : Compensate Payment and Order ---------");
+
+                commandGateway.send(new RefundPaymentCommand(SagaOrchestratorApplication.accountId, event.getUser(), event.getPaymentId(), event.getAmount()));
+                System.out.println("------------------------------- Payment Compensated -------------------------------");
 
                 commandGateway.send(new DeleteOrderCommand(orderId, user, article, quantity, price));
+                System.out.println("-------------------------------- Order Compensated --------------------------------");
             }
         }
     }

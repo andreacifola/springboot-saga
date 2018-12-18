@@ -1,5 +1,5 @@
 package servicesagaorchestrator.stock;
 
 
-public class NotEnoughArticlesInTheStockException extends Exception {
+public class NotEnoughArticlesInTheStockException extends NullPointerException {
 }

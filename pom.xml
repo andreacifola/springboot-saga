@@ -60,13 +60,13 @@
 		<dependency>
 			<groupId>org.axonframework</groupId>
 			<artifactId>axon-test</artifactId>
-			<version>3.0-M4</version>
+			<version>3.4.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.axonframework</groupId>
-			<artifactId>axon-spring</artifactId>
-			<version>3.0-M4</version>
+			<artifactId>axon-spring-boot-starter</artifactId>
+			<version>3.4.1</version>
 		</dependency>
 
 

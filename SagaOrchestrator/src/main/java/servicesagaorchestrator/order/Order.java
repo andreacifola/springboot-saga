@@ -1,11 +1,10 @@
 package servicesagaorchestrator.order;
 
 
-import com.example.demo.coreapi.CreateOrderCommand;
-import com.example.demo.coreapi.DeleteOrderCommand;
-import com.example.demo.coreapi.OrderCreatedEvent;
-import com.example.demo.coreapi.OrderDeletedEvent;
-import lombok.NoArgsConstructor;
+import servicesagaorchestrator.coreapi.CreateOrderCommand;
+import servicesagaorchestrator.coreapi.DeleteOrderCommand;
+import servicesagaorchestrator.coreapi.OrderCreatedEvent;
+import servicesagaorchestrator.coreapi.OrderDeletedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -16,13 +15,16 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 
 @Aggregate
-@NoArgsConstructor
 public class Order {
 
     @AggregateIdentifier
     private String orderId;
 
     private OrderEntity order = new OrderEntity();
+
+    public Order() {
+
+    }
 
     @CommandHandler
     public Order(CreateOrderCommand command) {

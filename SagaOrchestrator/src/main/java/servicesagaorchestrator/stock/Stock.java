@@ -1,9 +1,9 @@
 package servicesagaorchestrator.stock;
 
 
-import com.example.demo.coreapi.StockUpdatedEvent;
-import com.example.demo.coreapi.UpdateStockCommand;
-import lombok.NoArgsConstructor;
+import servicesagaorchestrator.SagaOrchestratorApplication;
+import servicesagaorchestrator.coreapi.StockUpdatedEvent;
+import servicesagaorchestrator.coreapi.UpdateStockCommand;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -13,7 +13,6 @@ import servicesagaorchestrator.entities.WareHouseEntity;
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 @Aggregate
-@NoArgsConstructor
 public class Stock {
 
     @AggregateIdentifier
@@ -23,11 +22,14 @@ public class Stock {
 
     private WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt", 23);
 
+    public Stock() {
+    }
+
     @CommandHandler
     public Stock(UpdateStockCommand command) throws NotEnoughArticlesInTheStockException {
         available = wareHouseEntity.getAvailable();
         if (available >= command.getQuantity()) {
-            apply(new StockUpdatedEvent(command.getArticle(), command.getStockId(), command.getQuantity()));
+            apply(new StockUpdatedEvent(SagaOrchestratorApplication.stockId, command.getArticle(), command.getStockId(), command.getQuantity()));
         } else {
             System.out.println("You don't have enough " + command.getArticle() + "s in the warehouse!\n");
             throw new NotEnoughArticlesInTheStockException();
