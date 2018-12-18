@@ -27,21 +27,21 @@ public class Payment {
     }
 
     @CommandHandler
-    public Payment(DoPaymentCommand command) throws NotEnoughMoneyAccountException {
+    public Payment(DoPaymentCommand command) {
         Integer moneyAccount = Integer.valueOf(alice.getMoneyAccount().substring(0, alice.getMoneyAccount().length()-1));
         Integer price = Integer.valueOf(command.getAmount().substring(0, command.getAmount().length()-1));
 
         if (moneyAccount >= price) {
-            apply(new PaymentDoneEvent(SagaOrchestratorApplication.accountId, command.getUser(), command.getPaymentId(), command.getAmount()));
+            apply(new PaymentDoneEvent(command.getUser(), command.getPaymentId(), command.getAmount()));
         } else {
-            System.out.println("You don't have enough money in your bank account!\n");
+            System.out.println("\nYou don't have enough money in your bank account!\n");
             throw new NotEnoughMoneyAccountException();
         }
     }
 
     @CommandHandler
     public void handle(RefundPaymentCommand command) {
-        apply(new PaymentRefundedEvent(SagaOrchestratorApplication.accountId, user, command.getPaymentId(), command.getAmount()));
+        apply(new PaymentRefundedEvent(user, command.getPaymentId(), command.getAmount()));
     }
 
     @EventSourcingHandler
@@ -49,15 +49,16 @@ public class Payment {
         this.user = event.getUser();
         this.amount = event.getAmount();
 
-        System.out.println("\nAlice money account = " + alice.getMoneyAccount());
-        System.out.println("Price of the ordered article = " + event.getAmount());
+        System.out.println("\nUsername =                      " + event.getUser());
+        System.out.println(event.getUser() + " money account =           " + alice.getMoneyAccount());
+        System.out.println("Price of the ordered article =  " + event.getAmount());
 
         Integer moneyAccount = Integer.valueOf(alice.getMoneyAccount().substring(0, alice.getMoneyAccount().length()-1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length()-1));
         moneyAccount -= price;
         alice.setMoneyAccount(moneyAccount.toString()+"$");
 
-        System.out.println("Alice new money account = " + alice.getMoneyAccount() +"\n");
+        System.out.println("Alice new money account =       " + alice.getMoneyAccount() +"\n");
         return alice.getMoneyAccount();
     }
 
@@ -66,13 +67,13 @@ public class Payment {
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length()-1));
         Integer moneyAccount = Integer.valueOf(alice.getMoneyAccount().substring(0, alice.getMoneyAccount().length()-1));
 
-        System.out.println("\nAlice money account = " + alice.getMoneyAccount());
-        System.out.println("Amount of refund = " + event.getAmount());
+        System.out.println("\nAlice money account =      " + alice.getMoneyAccount());
+        System.out.println("Amount to refund =         " + event.getAmount());
 
         moneyAccount += price;
         alice.setMoneyAccount(moneyAccount.toString()+"$");
 
-        System.out.println("Alice new money account = " + alice.getMoneyAccount() + " --> PRINTED IN \"Payment.java\"\n");
+        System.out.println("Alice new money account =  " + alice.getMoneyAccount() + "\n");
         return alice.getMoneyAccount();
     }
 }

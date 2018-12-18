@@ -57,17 +57,17 @@ public class Order {
         order = new OrderEntity();
 
         System.out.flush();
-        System.out.println("Deleting the order...");
+        System.out.println("\nDeleting the order...");
         printOrderElements();
 
         return order;
     }
 
     private void printOrderElements() {
-        System.out.println("\nOrder Id = " + order.getOrderID());
-        System.out.println("User = " + order.getUser());
-        System.out.println("Article = " + order.getArticle());
-        System.out.println("Quantity = " + order.getQuantity());
-        System.out.println("Price = " + order.getPrice()+ "\n");
+        System.out.println("\nOrder Id =  " + order.getOrderID());
+        System.out.println("User =      " + order.getUser());
+        System.out.println("Article =   " + order.getArticle());
+        System.out.println("Quantity =  " + order.getQuantity());
+        System.out.println("Price =     " + order.getPrice()+ "\n");
     }
 }

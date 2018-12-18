@@ -20,7 +20,7 @@ public class Stock {
     private Integer quantity;
     private Integer available;
 
-    private WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt", 23);
+    private WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt",  23);
 
     public Stock() {
     }
@@ -31,7 +31,7 @@ public class Stock {
         if (available >= command.getQuantity()) {
             apply(new StockUpdatedEvent(SagaOrchestratorApplication.stockId, command.getArticle(), command.getStockId(), command.getQuantity()));
         } else {
-            System.out.println("You don't have enough " + command.getArticle() + "s in the warehouse!\n");
+            System.out.println("\nYou don't have enough " + command.getArticle() + "s in the warehouse!\n");
             throw new NotEnoughArticlesInTheStockException();
         }
     }
@@ -43,8 +43,9 @@ public class Stock {
         this.article = event.getArticle();
         this.quantity = event.getQuantity();
 
-        System.out.println("\nNumber of " + event.getArticle() + "s inside the warehouse = " + wareHouseEntity.getAvailable());
-        System.out.println("Number of "+ event.getArticle() + "s ordered = " + event.getQuantity());
+        System.out.println("\nArticle Id =                                " + event.getArticleId());
+        System.out.println("Number of " + event.getArticle() + "s inside the warehouse =     " + wareHouseEntity.getAvailable());
+        System.out.println("Number of " + event.getArticle() + "s ordered =                  " + event.getQuantity());
 
         wareHouseEntity.setAvailable(wareHouseEntity.getAvailable() - event.getQuantity());
 

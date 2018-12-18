@@ -10,4 +10,4 @@ class StockUpdatedEvent(val articleId : String, val article : String, val stockI
    it goes well or it goes wrong; but it is not involved by other future transactions.
  */
 
-class NotEnoughArticlesInTheStockException() : Exception()
+class NotEnoughArticlesInTheStockException : Exception()
