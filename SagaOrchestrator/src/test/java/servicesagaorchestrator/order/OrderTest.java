@@ -54,11 +54,11 @@ public class OrderTest {
     public void testOrderDeleted() throws Exception {
         Order order = new Order();
         OrderEntity orderEntityFromOrder = order.on(new OrderDeletedEvent("1234", "Alice", "shirt", 2, "30$"));
-        assertEquals("These are equals", null, orderEntityFromOrder.getOrderID());
-        assertEquals("These are equals", null, orderEntityFromOrder.getUser());
-        assertEquals("These are equals", null, orderEntityFromOrder.getArticle());
-        assertEquals("These are equals", null, orderEntityFromOrder.getQuantity());
-        assertEquals("These are equals", null, orderEntityFromOrder.getPrice());
+        assertNull("These are equals", orderEntityFromOrder.getOrderID());
+        assertNull("These are equals", orderEntityFromOrder.getUser());
+        assertNull("These are equals", orderEntityFromOrder.getArticle());
+        assertNull("These are equals", orderEntityFromOrder.getQuantity());
+        assertNull("These are equals", orderEntityFromOrder.getPrice());
     }
 
 }

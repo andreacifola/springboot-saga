@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class PaymentTest {
 
     private FixtureConfiguration<Payment> fixture; //version 3.4.1
-     private Payment payment = new Payment();
+    private Payment payment = new Payment();
 
     @Before
     public void setUp() throws Exception {

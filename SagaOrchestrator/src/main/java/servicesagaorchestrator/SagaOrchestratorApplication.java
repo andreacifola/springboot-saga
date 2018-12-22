@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 @SpringBootApplication
-//@EntityScan(basePackages = {"the package on which it depends"}) //Add this only if it realy depends on the SagaOrchestrator module
-//@ComponentScan(basePackages = {"the package on which it depends"}) //Add this only if it realy depends on the SagaOrchestrator module
 public class SagaOrchestratorApplication {
 
     public static String sagaId;
@@ -48,7 +46,6 @@ public class SagaOrchestratorApplication {
         sendSagaServices(commandGateway, orderId, accountId, stockId);
     }
 
-    /*
     private static void dispatchSingleServices(CommandBus commandBus, String orderId, String accountId, String stockId) {
 
         commandBus.dispatch(asCommandMessage(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$")));
@@ -57,18 +54,20 @@ public class SagaOrchestratorApplication {
         commandBus.dispatch(asCommandMessage(new RefundPaymentCommand(accountId, "Alice", "5555", "30$")));
         commandBus.dispatch(asCommandMessage(new UpdateStockCommand(stockId, "shirt", "9876", 2)));
     }
-    */
 
     private static void sendSagaServices(CommandGateway commandGateway, String orderId, String accountId, String articleId) {
 
-        System.out.println("\n------------------------------------- Start Saga " + sagaId + " --------------------------------------");
-        System.out.println("\n------------------------------------ Create Order " + sagaId + " -------------------------------------");
+        System.out.println("\n--------------------------------------------------- Start Saga " +
+                sagaId + " ----------------------------------------------------");
         logger.info("Start Saga " + sagaId + "\n");
+        System.out.println("\n-------------------------------------------------- Create Order " +
+                sagaId + " ---------------------------------------------------");
         logger.info("Create Order " + sagaId + "\n");
         commandGateway.send(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$"));
         //commandGateway.send(new DoPaymentCommand("Alice", "5555", "30$"));
         //commandGateway.send(new UpdateStockCommand(articleId, "shirt", "9876", 2));
-        System.out.println("\n-------------------------------------- End Saga " + sagaId + " ---------------------------------------");
+        System.out.println("\n---------------------------------------------------- End Saga " +
+                sagaId + " -----------------------------------------------------");
         SagaOrchestratorApplication.logger.info("End Saga " + SagaOrchestratorApplication.sagaId + "\n\n\n");
     }
 
@@ -76,11 +75,4 @@ public class SagaOrchestratorApplication {
     public EventStorageEngine eventStorageEngine() {
         return new InMemoryEventStorageEngine();
     }
-
-	/*
-	@Bean
-	public CommandBus commandBus() {
-		return new AsynchronousCommandBus();
-	}
-	*/
 }

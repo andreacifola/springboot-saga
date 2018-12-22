@@ -16,6 +16,7 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 public class Stock {
 
     @AggregateIdentifier
+    private String stockId;
     private String article;
     private Integer quantity;
     private Integer available;
@@ -40,6 +41,7 @@ public class Stock {
 
     @EventSourcingHandler
     public Integer on(StockUpdatedEvent event) {
+        this.stockId = event.getStockId();
         this.article = event.getArticle();
         this.quantity = event.getQuantity();
 
