@@ -12,3 +12,8 @@ class DeleteOrderCommand(@TargetAggregateIdentifier val orderId : String, val us
                          val article : String, val quantity : Int, val price : String)
 class OrderDeletedEvent(val orderId : String, val user : String,
                         val article : String, val quantity : Int, val price : String)
+
+class StartSagaCommand(@TargetAggregateIdentifier val orderId : String, val user : String,
+                         val article : String, val quantity : Int, val price : String)
+class SagaStartedEvent(val orderId : String, val user : String,
+                        val article : String, val quantity : Int, val price : String)

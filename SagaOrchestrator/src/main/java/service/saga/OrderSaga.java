@@ -35,7 +35,7 @@ public class OrderSaga {
      */
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
-    public void on(OrderCreatedEvent event) {
+    public void on(SagaStartedEvent event) {
         System.out.println("-------------------------------------------------- Order Created " +
                 SagaOrchestratorApplication.sagaId + " --------------------------------------------------");
         SagaOrchestratorApplication.logger.info("Order Created " + SagaOrchestratorApplication.sagaId + "\n");
@@ -148,6 +148,8 @@ public class OrderSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "stockId")
     public void on(StockUpdatedEvent event) {
+        System.out.println("\n---------------------------------------------------- End Saga " +
+                SagaOrchestratorApplication.sagaId + " -----------------------------------------------------");
         //SagaLifecycle.end(); //Add this line of code if we have to conditionally end the saga
     }
 
@@ -158,6 +160,8 @@ public class OrderSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void on(OrderDeletedEvent event) {
+        System.out.println("\n---------------------------------------------------- End Saga " +
+                SagaOrchestratorApplication.sagaId + " -----------------------------------------------------");
 
     }
 }

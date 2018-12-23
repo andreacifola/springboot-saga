@@ -11,8 +11,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.CreateOrderCommand;
+import service.coreapi.StartSagaCommand;
 import service.coreapi.OrderCreatedEvent;
+
 
 @ProcessingGroup("sagaEvents")
 @RestController
@@ -26,7 +27,8 @@ public class SagaConsumer {
 
     @EventHandler
     public void on(OrderCreatedEvent event) {
-        commandGateway.send(new CreateOrderCommand("dahdeiwuh3289", "Alice", "shirt", 2, "30$"));
+        commandGateway.send(new StartSagaCommand(event.getOrderId(),
+                event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
     }
 
     @Bean

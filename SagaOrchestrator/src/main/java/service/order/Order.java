@@ -1,16 +1,15 @@
 package service.order;
 
-
-import service.coreapi.CreateOrderCommand;
+import service.SagaOrchestratorApplication;
+import service.coreapi.StartSagaCommand;
 import service.coreapi.DeleteOrderCommand;
-import service.coreapi.OrderCreatedEvent;
+import service.coreapi.SagaStartedEvent;
 import service.coreapi.OrderDeletedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 import service.entities.OrderEntity;
-
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 
@@ -27,8 +26,8 @@ public class Order {
     }
 
     @CommandHandler
-    public Order(CreateOrderCommand command) {
-        apply(new OrderCreatedEvent(command.getOrderId(), command.getUser(),
+    public Order(StartSagaCommand command) {
+        apply(new SagaStartedEvent(command.getOrderId(), command.getUser(),
                 command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
@@ -39,7 +38,13 @@ public class Order {
     }
 
     @EventSourcingHandler
-    public OrderEntity on(OrderCreatedEvent event) {
+    public OrderEntity on(SagaStartedEvent event) {
+        System.out.println("\n--------------------------------------------------- Start Saga " +
+                SagaOrchestratorApplication.sagaId + " ----------------------------------------------------");
+        SagaOrchestratorApplication.logger.info("Start Saga " + SagaOrchestratorApplication.sagaId + "\n");
+        System.out.println("\n-------------------------------------------------- Create Order " +
+                SagaOrchestratorApplication.sagaId + " ---------------------------------------------------");
+        SagaOrchestratorApplication.logger.info("Create Order " + SagaOrchestratorApplication.sagaId + "\n");
         this.orderId = event.getOrderId();
         order.setOrderID(orderId);
         order.setUser(event.getUser());

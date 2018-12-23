@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import service.coreapi.OrderCreatedEvent;
 import service.coreapi.OrderDeletedEvent;
+import service.coreapi.SagaStartedEvent;
 import service.entities.OrderEntity;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
@@ -25,7 +26,7 @@ public class OrderConsumer {
     private OrderEntity order = new OrderEntity();
 
     @EventHandler
-    public OrderEntity on(OrderCreatedEvent event) {
+    public OrderEntity on(SagaStartedEvent event) {
         order.setOrderID(event.getOrderId());
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());

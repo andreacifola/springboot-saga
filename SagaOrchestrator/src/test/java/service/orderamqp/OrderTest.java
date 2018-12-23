@@ -1,8 +1,8 @@
 package service.orderamqp;
 
-import service.coreapi.CreateOrderCommand;
+import service.coreapi.StartSagaCommand;
 import service.coreapi.DeleteOrderCommand;
-import service.coreapi.OrderCreatedEvent;
+import service.coreapi.SagaStartedEvent;
 import service.coreapi.OrderDeletedEvent;
 
 import org.axonframework.test.aggregate.AggregateTestFixture;
@@ -28,15 +28,15 @@ public class OrderTest {
     @Test
     public void testCreateOrder() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new CreateOrderCommand("1234", "Alice", "shirt", 2, "30$"))
-                .expectEvents(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"));
+                .when(new StartSagaCommand("1234", "Alice", "shirt", 2, "30$"))
+                .expectEvents(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"));
     }
 
     @Test
     public void testOrderCreated() throws Exception {
         OrderEntity orderEntity = new OrderEntity("1234", "Alice", "shirt", 2, "30$");
         Order order = new Order();
-        OrderEntity orderEntityFromOrder = order.on(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"));
+        OrderEntity orderEntityFromOrder = order.on(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"));
         assertEquals("These are equals", orderEntity.getOrderID(), orderEntityFromOrder.getOrderID());
         assertEquals("These are equals", orderEntity.getUser(), orderEntityFromOrder.getUser());
         assertEquals("These are equals", orderEntity.getArticle(), orderEntityFromOrder.getArticle());
@@ -46,7 +46,7 @@ public class OrderTest {
 
     @Test
     public void testDeleteOrder() throws Exception {
-        fixture.given(new OrderCreatedEvent("1234", "Alice", "shirt", 2, "30$"))
+        fixture.given(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
                 .when(new DeleteOrderCommand("1234", "Alice", "shirt", 2, "30$"))
                 .expectEvents(new OrderDeletedEvent("1234", "Alice", "shirt", 2, "30$"));
     }
