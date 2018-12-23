@@ -1,4 +1,4 @@
-package service.payment;
+package service.paymentamqp;
 
 import com.rabbitmq.client.Channel;
 import org.axonframework.amqp.eventhandling.DefaultAMQPMessageConverter;
@@ -17,7 +17,7 @@ import service.entities.BankAccountEntity;
 
 @ProcessingGroup("paymentEvents")
 @RestController
-public class Payment {
+public class PaymentConsumer {
 
     private BankAccountEntity alice = new BankAccountEntity("sd573jn3", "Alice", "350$");
 

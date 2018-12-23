@@ -1,45 +1,32 @@
-package service.order;
+package service.orderamqp;
 
-import org.axonframework.commandhandling.CommandHandler;
-import org.axonframework.commandhandling.model.AggregateIdentifier;
-import org.axonframework.eventsourcing.EventSourcingHandler;
-import org.axonframework.spring.stereotype.Aggregate;
-import service.coreapi.CreateOrderCommand;
-import service.coreapi.DeleteOrderCommand;
+
+import com.rabbitmq.client.Channel;
+import org.axonframework.amqp.eventhandling.DefaultAMQPMessageConverter;
+import org.axonframework.amqp.eventhandling.spring.SpringAMQPMessageSource;
+import org.axonframework.config.ProcessingGroup;
+import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.serialization.Serializer;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.RestController;
 import service.coreapi.OrderCreatedEvent;
 import service.coreapi.OrderDeletedEvent;
 import service.entities.OrderEntity;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
-@Aggregate
-public class Order {
 
-    @AggregateIdentifier
-    private String orderId;
+@ProcessingGroup("orderEvents")
+@RestController
+public class OrderConsumer {
 
     private OrderEntity order = new OrderEntity();
 
-    public Order() {
-
-    }
-
-    @CommandHandler
-    public Order(CreateOrderCommand command) {
-        apply(new OrderCreatedEvent(command.getOrderId(), command.getUser(),
-                command.getArticle(), command.getQuantity(), command.getPrice()));
-    }
-
-    @CommandHandler
-    public void handle(DeleteOrderCommand command) {
-        apply(new OrderDeletedEvent(command.getOrderId(), command.getUser(),
-                command.getArticle(), command.getQuantity(), command.getPrice()));
-    }
-
-    @EventSourcingHandler
+    @EventHandler
     public OrderEntity on(OrderCreatedEvent event) {
-        this.orderId = event.getOrderId();
-        order.setOrderID(orderId);
+        order.setOrderID(event.getOrderId());
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());
         order.setQuantity(event.getQuantity());
@@ -50,7 +37,7 @@ public class Order {
         return order;
     }
 
-    @EventSourcingHandler
+    @EventHandler
     public OrderEntity on(OrderDeletedEvent event) {
         order = new OrderEntity();
 
@@ -67,5 +54,17 @@ public class Order {
         System.out.println("Article =   " + order.getArticle());
         System.out.println("Quantity =  " + order.getQuantity());
         System.out.println("Price =     " + order.getPrice()+ "\n");
+    }
+
+    @Bean
+    public SpringAMQPMessageSource orderQueueMessageSource(Serializer serializer) {
+        return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {
+
+            @RabbitListener(queues = "Order")
+            @Override
+            public void onMessage(Message message, Channel channel) {
+                super.onMessage(message, channel);
+            }
+        };
     }
 }

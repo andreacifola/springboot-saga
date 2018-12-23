@@ -1,4 +1,4 @@
-package service.stock;
+package service.stockamqp;
 
 import service.coreapi.StockUpdatedEvent;
 import service.coreapi.UpdateStockCommand;
@@ -6,6 +6,8 @@ import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 import service.entities.WareHouseEntity;
+import service.stock.NotEnoughArticlesInTheStockException;
+import service.stock.Stock;
 
 import static org.junit.Assert.*;
 

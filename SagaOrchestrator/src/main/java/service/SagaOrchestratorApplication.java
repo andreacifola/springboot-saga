@@ -2,15 +2,11 @@ package service;
 
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
-import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
-import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import service.coreapi.*;
 import service.logging.LogFile;
-
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -43,7 +39,7 @@ public class SagaOrchestratorApplication {
         System.out.println("Stock:   " + stockId);
 
         //dispatchSingleServices(commandBus, orderId, accountId, stockId);
-        sendSagaServices(commandGateway, orderId, accountId, stockId);
+        //sendSagaServices(commandGateway, orderId, accountId, stockId);
     }
 
     private static void dispatchSingleServices(CommandBus commandBus, String orderId, String accountId, String stockId) {

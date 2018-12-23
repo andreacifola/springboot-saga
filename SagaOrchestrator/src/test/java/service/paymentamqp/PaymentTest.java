@@ -1,4 +1,4 @@
-package service.payment;
+package service.paymentamqp;
 
 import service.coreapi.DoPaymentCommand;
 import service.coreapi.PaymentDoneEvent;
@@ -9,6 +9,8 @@ import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import service.entities.BankAccountEntity;
+import service.payment.NotEnoughMoneyAccountException;
+import service.payment.Payment;
 
 import static org.junit.Assert.*;
 

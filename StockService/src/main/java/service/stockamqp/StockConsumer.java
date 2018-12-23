@@ -1,4 +1,4 @@
-package service.stock;
+package service.stockamqp;
 
 import com.rabbitmq.client.Channel;
 import org.axonframework.amqp.eventhandling.DefaultAMQPMessageConverter;
@@ -16,7 +16,7 @@ import service.entities.WareHouseEntity;
 
 @ProcessingGroup("stockEvents")
 @RestController
-public class Stock {
+public class StockConsumer {
 
     private WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt",  23);
 

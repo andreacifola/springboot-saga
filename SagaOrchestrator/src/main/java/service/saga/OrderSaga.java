@@ -30,7 +30,7 @@ public class OrderSaga {
     private String stockId;
 
     /**
-     * This is the first event of the Saga, triggered when a new order is executed.
+     * This is the first event of the Saga, triggered when a new orderamqp is executed.
      * @param event
      */
     @StartSaga
@@ -56,7 +56,7 @@ public class OrderSaga {
         System.out.println("\n------------------------------------------------- Execute Payment " +
                 SagaOrchestratorApplication.sagaId + " -------------------------------------------------");
         SagaOrchestratorApplication.logger.info("Execute Payment " + SagaOrchestratorApplication.sagaId + "\n");
-        // We try to send the payment command...
+        // We try to send the paymentamqp command...
         commandGateway.send(new DoPaymentCommand(SagaOrchestratorApplication.accountId,
                 event.getUser(), paymentId, event.getPrice()), new CommandCallback<DoPaymentCommand, Object>() {
             @Override
@@ -70,7 +70,7 @@ public class OrderSaga {
 
             @Override
             public void onFailure(CommandMessage<? extends DoPaymentCommand> commandMessage, Throwable throwable) {
-                // ... But if something goes wrong with the payment, we have to compensate the order command done before
+                // ... But if something goes wrong with the paymentamqp, we have to compensate the orderamqp command done before
                 System.out.println("----------------------------------------------------------- " +
                         "Abort Payment : Not enough money -----------------------------------------------------------");
                 SagaOrchestratorApplication.logger.info("Abort Payment " +
@@ -90,7 +90,7 @@ public class OrderSaga {
 
 
     /**
-     * This is the second step of the Saga; when we complete the payment, we start with the updating stock command.
+     * This is the second step of the Saga; when we complete the paymentamqp, we start with the updating stockamqp command.
      * @param event
      */
     @SagaEventHandler(associationProperty = "paymentId")
@@ -99,7 +99,7 @@ public class OrderSaga {
         System.out.println("\n-------------------------------------------------- Update Stock " +
                 SagaOrchestratorApplication.sagaId + " ---------------------------------------------------");
         SagaOrchestratorApplication.logger.info("Update Stock " + SagaOrchestratorApplication.sagaId + "\n");
-        // We try to send the updating stock command...
+        // We try to send the updating stockamqp command...
         commandGateway.send(new UpdateStockCommand(SagaOrchestratorApplication.stockId, article, stockId, quantity),
                 new CommandCallback<UpdateStockCommand, Object>() {
             @Override
@@ -114,10 +114,10 @@ public class OrderSaga {
             @Override
             public void onFailure(CommandMessage<? extends UpdateStockCommand> commandMessage, Throwable throwable) {
 
-                // ... But if something goes wrong with the payment, we have to
-                //     compensate both the payment command and the order command done before
+                // ... But if something goes wrong with the paymentamqp, we have to
+                //     compensate both the paymentamqp command and the orderamqp command done before
                 System.out.println("--------------------------------------------- Abort Stock : " +
-                        "Not enough articles in the stock  --------------------------------------------");
+                        "Not enough articles in the stockamqp  --------------------------------------------");
                 SagaOrchestratorApplication.logger.info("Abort Stock " +
                         SagaOrchestratorApplication.sagaId + "\n");
                 System.out.println("\n------------------------------------------------------ " +

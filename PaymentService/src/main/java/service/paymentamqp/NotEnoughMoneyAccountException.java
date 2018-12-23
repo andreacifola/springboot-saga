@@ -1,4 +1,4 @@
-package service.payment;
+package service.paymentamqp;
 
 
 public class NotEnoughMoneyAccountException extends NullPointerException {

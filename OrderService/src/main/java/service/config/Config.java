@@ -19,22 +19,12 @@ public class Config {
     // Configurations for amqp
     @Bean
     public Exchange eventsExchange() {
-        return ExchangeBuilder.fanoutExchange("Try").build();
+        return ExchangeBuilder.fanoutExchange("OrderEvents").build();
     }
 
     @Bean
     public Queue eventsQueueOrder() {
-        return QueueBuilder.durable("Order").build();
-    }
-
-    @Bean
-    public Queue eventsQueuePayment() {
-        return QueueBuilder.durable("Payment").build();
-    }
-
-    @Bean
-    public Queue eventsQueueStock() {
-        return QueueBuilder.durable("Stock").build();
+        return QueueBuilder.durable("OrderSaga").build();
     }
 
     @Bean
@@ -42,24 +32,10 @@ public class Config {
         return BindingBuilder.bind(eventsQueueOrder()).to(eventsExchange()).with("orderamqp").noargs();
     }
 
-    @Bean
-    public Binding eventsBindingPayment() {
-        return BindingBuilder.bind(eventsQueuePayment()).to(eventsExchange()).with("paymentamqp").noargs();
-    }
-
-    @Bean
-    public Binding eventsBindingStock() {
-        return BindingBuilder.bind(eventsQueueStock()).to(eventsExchange()).with("stockamqp").noargs();
-    }
-
     @Autowired
     public void configure(AmqpAdmin admin) {
         admin.declareExchange(eventsExchange());
         admin.declareQueue(eventsQueueOrder());
-        admin.declareQueue(eventsQueuePayment());
-        admin.declareQueue(eventsQueueStock());
         admin.declareBinding(eventsBindingOrder());
-        admin.declareBinding(eventsBindingPayment());
-        admin.declareBinding(eventsBindingStock());
     }
 }

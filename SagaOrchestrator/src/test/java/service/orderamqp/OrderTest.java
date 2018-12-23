@@ -1,4 +1,4 @@
-package service.order;
+package service.orderamqp;
 
 import service.coreapi.CreateOrderCommand;
 import service.coreapi.DeleteOrderCommand;
@@ -9,6 +9,7 @@ import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;
 import service.entities.OrderEntity;
+import service.order.Order;
 
 import static org.junit.Assert.*;
 
