@@ -31,20 +31,19 @@ public class Payment {
     }
 
     @CommandHandler
-    public void handle(EnableStockUpdateCommand command) {
-        apply(new StockUpdateEnabledEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    public void handle(RefundPaymentCommand command) {
+        apply(new PaymentRefundedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
     }
 
     @CommandHandler
-    public void handle(RefundPaymentCommand command) {
-        apply(new PaymentRefundedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    public void handle(EnableStockUpdateCommand command) {
+        apply(new StockUpdateEnabledEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(CompensateOrderCommand command) {
         apply(new OrderCompensatedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
     }
-
 
 
     @EventSourcingHandler
@@ -55,7 +54,7 @@ public class Payment {
     }
 
     @EventSourcingHandler
-    public void on(OrderCompensatedEvent event) {
+    public void on(PaymentEnabledEvent event) {
 
     }
 
@@ -65,12 +64,12 @@ public class Payment {
     }
 
     @EventSourcingHandler
-    public void on(PaymentEnabledEvent event) {
+    public void on(StockUpdateEnabledEvent event) {
 
     }
 
     @EventSourcingHandler
-    public void on(StockUpdateEnabledEvent event) {
+    public void on(OrderCompensatedEvent event) {
 
     }
 }

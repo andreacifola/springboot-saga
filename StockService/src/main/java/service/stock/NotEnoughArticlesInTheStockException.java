@@ -1,4 +1,4 @@
-package service.stockamqp;
+package service.stock;
 
 
 public class NotEnoughArticlesInTheStockException extends NullPointerException {

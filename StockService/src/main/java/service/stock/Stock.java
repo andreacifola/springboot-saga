@@ -1,5 +1,6 @@
 package service.stock;
 
+
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -37,12 +38,6 @@ public class Stock {
         apply(new PaymentCompensatedEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
     }
 
-    @CommandHandler
-    public void handle(EndSagaStockCommand command) {
-        apply(new StockEndedSagaEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
-    }
-
-
 
     @EventSourcingHandler
     public void on(StockUpdatedEvent event) {
@@ -59,11 +54,6 @@ public class Stock {
 
     @EventSourcingHandler
     public void on(PaymentCompensatedEvent event) {
-
-    }
-
-    @EventSourcingHandler
-    public void on(SagaEndedOrderEvent event) {
 
     }
 }

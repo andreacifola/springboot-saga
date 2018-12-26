@@ -1,19 +1,14 @@
 package service.saga;
 
-
-import org.axonframework.commandhandling.CommandCallback;
-import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.eventhandling.saga.EndSaga;
 import org.axonframework.eventhandling.saga.SagaEventHandler;
-import org.axonframework.eventhandling.saga.SagaLifecycle;
-import org.axonframework.eventhandling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 import service.SagaOrchestratorApplication;
-import service.coreapi.*;
+import service.coreapi.OrderDeletedEvent;
+import service.coreapi.StockUpdatedEvent;
 
-import java.util.UUID;
 
 @Saga
 public class OrderSaga {
@@ -33,9 +28,10 @@ public class OrderSaga {
      * This is the first event of the Saga, triggered when a new orderamqp is executed.
      * @param event
      */
+    /*
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
-    public void on(SagaStartedEvent event) {
+    public void on(OrderCreatedEvent event) {
         System.out.println("-------------------------------------------------- Order Created " +
                 SagaOrchestratorApplication.sagaId + " --------------------------------------------------");
         SagaOrchestratorApplication.logger.info("Order Created " + SagaOrchestratorApplication.sagaId + "\n");
@@ -87,12 +83,14 @@ public class OrderSaga {
             }
         });
     }
+    */
 
 
     /**
      * This is the second step of the Saga; when we complete the paymentamqp, we start with the updating stockamqp command.
      * @param event
      */
+    /*
     @SagaEventHandler(associationProperty = "paymentId")
     public void on(PaymentDoneEvent event) {
 
@@ -140,6 +138,7 @@ public class OrderSaga {
             }
         });
     }
+    */
 
     /**
      * This method will end the Saga when everithing ended good.

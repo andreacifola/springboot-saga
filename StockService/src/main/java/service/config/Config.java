@@ -18,24 +18,24 @@ public class Config {
 
     // Configurations for amqp
     @Bean
-    public Exchange eventsExchange() {
-        return ExchangeBuilder.fanoutExchange("OrderEvents").build();
+    public Exchange eventsExchangeStock() {
+        return ExchangeBuilder.fanoutExchange("StockEvents").build();
     }
 
     @Bean
-    public Queue eventsQueueOrder() {
-        return QueueBuilder.durable("OrderSaga").build();
+    public Queue eventsQueueStock() {
+        return QueueBuilder.durable("StockSaga").build();
     }
 
     @Bean
-    public Binding eventsBindingOrder() {
-        return BindingBuilder.bind(eventsQueueOrder()).to(eventsExchange()).with("order").noargs();
+    public Binding eventsBindingStock() {
+        return BindingBuilder.bind(eventsQueueStock()).to(eventsExchangeStock()).with("stock").noargs();
     }
 
     @Autowired
     public void configure(AmqpAdmin admin) {
-        admin.declareExchange(eventsExchange());
-        admin.declareQueue(eventsQueueOrder());
-        admin.declareBinding(eventsBindingOrder());
+        admin.declareExchange(eventsExchangeStock());
+        admin.declareQueue(eventsQueueStock());
+        admin.declareBinding(eventsBindingStock());
     }
 }

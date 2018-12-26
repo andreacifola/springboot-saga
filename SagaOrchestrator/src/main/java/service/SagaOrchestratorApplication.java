@@ -5,12 +5,10 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import service.coreapi.*;
 import service.logging.LogFile;
+
 import java.util.UUID;
 import java.util.logging.Logger;
-
-import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 @SpringBootApplication
 public class SagaOrchestratorApplication {
@@ -42,9 +40,10 @@ public class SagaOrchestratorApplication {
         //sendSagaServices(commandGateway, orderId, accountId, stockId);
     }
 
+    /*
     private static void dispatchSingleServices(CommandBus commandBus, String orderId, String accountId, String stockId) {
 
-        commandBus.dispatch(asCommandMessage(new StartSagaCommand(orderId, "Alice", "shirt", 2, "30$")));
+        commandBus.dispatch(asCommandMessage(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$")));
         commandBus.dispatch(asCommandMessage(new DeleteOrderCommand(orderId, "Alice", "shirt", 2, "30$")));
         commandBus.dispatch(asCommandMessage(new DoPaymentCommand(accountId, "Alice", "5555", "30$")));
         commandBus.dispatch(asCommandMessage(new RefundPaymentCommand(accountId, "Alice", "5555", "30$")));
@@ -60,10 +59,11 @@ public class SagaOrchestratorApplication {
                 sagaId + " ---------------------------------------------------");
         logger.info("Create Order " + sagaId + "\n");
 
-        commandGateway.send(new StartSagaCommand(orderId, "Alice", "shirt", 2, "30$"));
+        commandGateway.send(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$"));
 
         System.out.println("\n---------------------------------------------------- End Saga " +
                 sagaId + " -----------------------------------------------------");
         SagaOrchestratorApplication.logger.info("End Saga " + SagaOrchestratorApplication.sagaId + "\n\n\n");
     }
+    */
 }

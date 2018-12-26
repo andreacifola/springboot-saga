@@ -4,10 +4,7 @@ import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import service.coreapi.CreateOrderCommand;
-import service.coreapi.DeleteOrderCommand;
-import service.coreapi.OrderCreatedEvent;
-import service.coreapi.OrderDeletedEvent;
+import service.coreapi.*;
 import service.entities.OrderEntity;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
@@ -25,8 +22,8 @@ public class Order {
     }
 
     @CommandHandler
-    public Order(CreateOrderCommand command) {
-        apply(new OrderCreatedEvent(command.getOrderId(), command.getUser(),
+    public Order(StartSagaCommand command) {
+        apply(new SagaStartedEvent(command.getOrderId(), command.getUser(),
                 command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
@@ -36,8 +33,16 @@ public class Order {
                 command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
+    @CommandHandler
+    public void handle(EndSagaOrderCommand command) {
+        apply(new SagaEndedOrderEvent(command.getOrderId(), command.getUser(),
+                command.getArticle(), command.getQuantity(), command.getPrice()));
+    }
+
+
+
     @EventSourcingHandler
-    public OrderEntity on(OrderCreatedEvent event) {
+    public OrderEntity on(SagaStartedEvent event) {
         this.orderId = event.getOrderId();
         order.setOrderID(orderId);
         order.setUser(event.getUser());
@@ -55,10 +60,15 @@ public class Order {
         order = new OrderEntity();
 
         System.out.flush();
-        System.out.println("\nDeleting the orderamqp...");
+        System.out.println("\nDeleting the order...");
         printOrderElements();
 
         return order;
+    }
+
+    @EventSourcingHandler
+    public void on(SagaEndedOrderEvent event) {
+
     }
 
     private void printOrderElements() {

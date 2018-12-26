@@ -11,31 +11,36 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.StartSagaCommand;
-import service.coreapi.OrderCreatedEvent;
+import service.coreapi.EndSagaEnabledEvent;
+import service.coreapi.EndSagaStockCommand;
+import service.coreapi.PaymentCompensatedEvent;
 
-
-@ProcessingGroup("sagaEvents")
+@ProcessingGroup("sagaStockEvents")
 @RestController
-public class SagaConsumer {
+public class SagaStockConsumer {
 
-    private final CommandGateway commandGateway;
+    private final transient CommandGateway commandGateway;
 
-    public SagaConsumer(CommandGateway commandGateway) {
+    public SagaStockConsumer(CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
     }
 
     @EventHandler
-    public void on(OrderCreatedEvent event) {
-        commandGateway.send(new StartSagaCommand(event.getOrderId(),
-                event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
+    public void on(EndSagaEnabledEvent event) {
+        commandGateway.send(new EndSagaStockCommand(event.getArticleId(),
+                event.getArticle(), event.getStockId(), event.getQuantity()));
+    }
+
+    @EventHandler
+    public void on(PaymentCompensatedEvent event) {
+        //todo send right command
     }
 
     @Bean
-    public SpringAMQPMessageSource sagaQueueMessageSource(Serializer serializer) {
+    public SpringAMQPMessageSource sagaStockQueueMessageSource(Serializer serializer) {
         return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {
 
-            @RabbitListener(queues = "OrderSaga")
+            @RabbitListener(queues = "StockSaga")
             @Override
             public void onMessage(Message message, Channel channel) {
                 super.onMessage(message, channel);
