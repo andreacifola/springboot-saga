@@ -11,10 +11,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.EnablePaymentCommand;
-import service.coreapi.OrderCompensatedEvent;
-import service.coreapi.RefundPaymentCommand;
-import service.coreapi.StockUpdateEnabledEvent;
+import service.coreapi.*;
 
 
 @ProcessingGroup("sagaPaymentEvents")
@@ -28,14 +25,22 @@ public class SagaPaymentConsumer {
     }
 
     @EventHandler
-    public void on(StockUpdateEnabledEvent event) {
-        commandGateway.send(new EnablePaymentCommand(event.getAccountId(),
+    public void on(PaymentDoneEvent event) {
+        commandGateway.send(new EnableStockUpdateCommand(event.getAccountId(),
                 event.getUser(), event.getPaymentId(), event.getAmount()));
     }
 
     @EventHandler
-    public void on(OrderCompensatedEvent event) {
-        commandGateway.send(new RefundPaymentCommand(event.getAccountId(),
+    public void on(PaymentAbortedEvent event) {
+
+        commandGateway.send(new TriggerCompensateOrderCommand(event.getAccountId(),
+                event.getUser(), event.getPaymentId(), event.getAmount()));
+    }
+
+    @EventHandler
+    public void on(EndSagaPaymentTriggeredEvent event) {
+
+        commandGateway.send(new EndSagaPaymentCommand(event.getAccountId(),
                 event.getUser(), event.getPaymentId(), event.getAmount()));
     }
 

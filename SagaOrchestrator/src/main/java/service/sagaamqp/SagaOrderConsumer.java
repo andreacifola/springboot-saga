@@ -11,10 +11,10 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.CreateOrderCommand;
-import service.coreapi.EndTheSagaCommand;
-import service.coreapi.SagaEndedOrderEvent;
-import service.coreapi.SagaStartedEvent;
+import service.coreapi.EndSagaOrderCommand;
+import service.coreapi.EndSagaOrderTriggeredEvent;
+import service.coreapi.OrderCreatedEvent;
+import service.coreapi.StartSagaCommand;
 
 
 @ProcessingGroup("sagaOrderEvents")
@@ -28,14 +28,15 @@ public class SagaOrderConsumer {
     }
 
     @EventHandler
-    public void on(SagaStartedEvent event) {
-        commandGateway.send(new CreateOrderCommand(event.getOrderId(),
+    public void on(OrderCreatedEvent event) {
+        commandGateway.send(new StartSagaCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
     }
 
     @EventHandler
-    public void on(SagaEndedOrderEvent event) {
-        commandGateway.send(new EndTheSagaCommand(event.getOrderId(),
+    public void on(EndSagaOrderTriggeredEvent event) {
+
+        commandGateway.send(new EndSagaOrderCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
     }
 

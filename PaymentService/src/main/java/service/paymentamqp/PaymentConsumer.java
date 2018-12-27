@@ -3,6 +3,7 @@ package service.paymentamqp;
 import com.rabbitmq.client.Channel;
 import org.axonframework.amqp.eventhandling.DefaultAMQPMessageConverter;
 import org.axonframework.amqp.eventhandling.spring.SpringAMQPMessageSource;
+import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
@@ -14,20 +15,24 @@ import org.springframework.web.bind.annotation.RestController;
 import service.coreapi.*;
 import service.entities.BankAccountEntity;
 
+import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
+
 
 @ProcessingGroup("paymentEvents")
 @RestController
 public class PaymentConsumer {
 
     private final CommandGateway commandGateway;
+    private final CommandBus commandBus;
     private BankAccountEntity alice = new BankAccountEntity("sd573jn3", "Alice", "350$");
 
-    public PaymentConsumer(CommandGateway commandGateway) {
+    public PaymentConsumer(CommandGateway commandGateway, CommandBus commandBus) {
         this.commandGateway = commandGateway;
+        this.commandBus = commandBus;
     }
 
     @EventHandler
-    public void on(PaymentDoneEvent event) {
+    public void on(PaymentTriggeredEvent event) {
         Integer moneyAccount = Integer.valueOf(alice.getMoneyAccount().substring(0, alice.getMoneyAccount().length() - 1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length() - 1));
 
@@ -40,12 +45,12 @@ public class PaymentConsumer {
             moneyAccount -= price;
             alice.setMoneyAccount(moneyAccount.toString() + "$");
             System.out.println("Alice new money account =       " + alice.getMoneyAccount() + "\n");
+            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount())));
             commandGateway.send(new DoPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
-            commandGateway.send(new EnableStockUpdateCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
         } else {
             System.out.println("\nYou don't have enough money in your bank account!\n");
-            commandGateway.send(new DoPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
-            commandGateway.send(new CompensateOrderCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
+            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount())));
+            commandGateway.send(new AbortPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
         }
     }
 
@@ -61,7 +66,7 @@ public class PaymentConsumer {
         alice.setMoneyAccount(moneyAccount.toString()+"$");
 
         System.out.println("Alice new money account =  " + alice.getMoneyAccount() + "\n");
-        //todo send command
+        commandGateway.send(new TriggerEndSagaPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
     }
 
     @Bean

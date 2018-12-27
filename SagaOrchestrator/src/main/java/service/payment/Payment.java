@@ -21,13 +21,8 @@ public class Payment {
     }
 
     @CommandHandler
-    public Payment(DoPaymentCommand command) {
-        apply(new PaymentDoneEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
-    }
-
-    @CommandHandler
-    public void handle(EnablePaymentCommand command) {
-        apply(new PaymentEnabledEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    public Payment(TriggerPaymentCommand command) {
+        apply(new PaymentTriggeredEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
     }
 
     @CommandHandler
@@ -36,41 +31,79 @@ public class Payment {
     }
 
     @CommandHandler
+    public void handle(DoPaymentCommand command) {
+        apply(new PaymentDoneEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    }
+
+    @CommandHandler
+    public void handle(TriggerCompensateOrderCommand command) {
+        apply(new OrderCompensateTriggeredEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    }
+
+    @CommandHandler
+    public void handle(AbortPaymentCommand command) {
+        apply(new PaymentAbortedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    }
+
+    @CommandHandler
+    public void handle(TriggerEndSagaPaymentCommand command) {
+        apply(new EndSagaPaymentTriggeredEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    }
+
+    @CommandHandler
     public void handle(RefundPaymentCommand command) {
         apply(new PaymentRefundedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
     }
 
     @CommandHandler
-    public void handle(CompensateOrderCommand command) {
-        apply(new OrderCompensatedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
+    public void handle(EndSagaPaymentCommand command) {
+        apply(new SagaPaymentEndedEvent(command.getAccountId(), command.getUser(), command.getPaymentId(), command.getAmount()));
     }
 
 
 
     @EventSourcingHandler
-    public void on(PaymentDoneEvent event) {
+    public void on(PaymentTriggeredEvent event) {
         this.accountId = event.getAccountId();
         this.user = event.getUser();
         this.amount = event.getAmount();
     }
 
     @EventSourcingHandler
-    public void on(OrderCompensatedEvent event) {
+    public void on(OrderCompensateTriggeredEvent event) {
 
     }
 
     @EventSourcingHandler
-    public void on(PaymentRefundedEvent event) {
-
-    }
-
-    @EventSourcingHandler
-    public void on(PaymentEnabledEvent event) {
+    public void on(PaymentAbortedEvent event) {
 
     }
 
     @EventSourcingHandler
     public void on(StockUpdateEnabledEvent event) {
+
+    }
+
+    @EventSourcingHandler
+    public void on(PaymentDoneEvent event) {
+
+    }
+
+    @EventSourcingHandler
+    public void on(EndSagaPaymentTriggeredEvent event) {
+
+    }
+
+    @EventSourcingHandler
+    public void on(PaymentRefundedEvent event) {
+        System.out.println("\nAccount Id =      " + event.getAccountId());
+        System.out.println("Username =        " + event.getUser());
+        System.out.println("Money refunded =  " + event.getAmount() + "\n");
+
+    }
+
+    @EventSourcingHandler
+    public void on(SagaPaymentEndedEvent event) {
 
     }
 }

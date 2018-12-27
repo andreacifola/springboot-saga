@@ -24,23 +24,28 @@ public class Stock {
     }
 
     @CommandHandler
-    public Stock(UpdateStockCommand command) {
+    public Stock(TriggerStockUpdateCommand command) {
+        apply(new StockUpdateTriggeredEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+    }
+
+    @CommandHandler
+    public void handle(UpdateStockCommand command) {
         apply(new StockUpdatedEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
     }
 
     @CommandHandler
-    public void handle(EnableEndSagaCommand command) {
-        apply(new EndSagaEnabledEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+    public void handle(AbortStockCommand command) {
+        apply(new StockAbortedEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
     }
 
     @CommandHandler
-    public void handle(CompensatePaymentCommand command) {
-        apply(new PaymentCompensatedEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+    public void handle(TriggerCompensatePaymentCommand command) {
+        apply(new CompensatePaymentTriggeredEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
     }
 
 
     @EventSourcingHandler
-    public void on(StockUpdatedEvent event) {
+    public void on(StockUpdateTriggeredEvent event) {
         this.articleId = event.getArticleId();
         this.stockId = event.getStockId();
         this.article = event.getArticle();
@@ -48,12 +53,17 @@ public class Stock {
     }
 
     @EventSourcingHandler
-    public void on(EndSagaEnabledEvent event) {
+    public void on(StockUpdatedEvent event) {
 
     }
 
     @EventSourcingHandler
-    public void on(PaymentCompensatedEvent event) {
+    public void on(StockAbortedEvent event) {
+
+    }
+
+    @EventSourcingHandler
+    public void on(CompensatePaymentTriggeredEvent event) {
 
     }
 }

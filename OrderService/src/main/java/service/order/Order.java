@@ -22,8 +22,8 @@ public class Order {
     }
 
     @CommandHandler
-    public Order(StartSagaCommand command) {
-        apply(new SagaStartedEvent(command.getOrderId(), command.getUser(),
+    public Order(CreateOrderCommand command) {
+        apply(new OrderCreatedEvent(command.getOrderId(), command.getUser(),
                 command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
@@ -34,41 +34,44 @@ public class Order {
     }
 
     @CommandHandler
-    public void handle(EndSagaOrderCommand command) {
-        apply(new SagaEndedOrderEvent(command.getOrderId(), command.getUser(),
+    public void handle(TriggerEndSagaOrderCommand command) {
+        apply(new EndSagaOrderTriggeredEvent(command.getOrderId(), command.getUser(),
                 command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
 
 
     @EventSourcingHandler
-    public OrderEntity on(SagaStartedEvent event) {
+    public OrderEntity on(OrderCreatedEvent event) {
         this.orderId = event.getOrderId();
         order.setOrderID(orderId);
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());
         order.setQuantity(event.getQuantity());
         order.setPrice(event.getPrice());
-
-        printOrderElements();
+        System.out.println("GOT CreateOrderCommand");
 
         return order;
     }
 
     @EventSourcingHandler
     public OrderEntity on(OrderDeletedEvent event) {
-        order = new OrderEntity();
+        order.setOrderID(null);
+        order.setUser(null);
+        order.setArticle(null);
+        order.setQuantity(null);
+        order.setPrice(null);
 
         System.out.flush();
         System.out.println("\nDeleting the order...");
         printOrderElements();
-
+        System.out.println("GOT DeleteOrderCommand");
         return order;
     }
 
     @EventSourcingHandler
-    public void on(SagaEndedOrderEvent event) {
-
+    public void on(EndSagaOrderTriggeredEvent event) {
+        System.out.println("GOT TriggerEndSagaOrderCommand");
     }
 
     private void printOrderElements() {

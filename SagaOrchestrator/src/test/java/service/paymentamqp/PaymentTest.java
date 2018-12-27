@@ -4,10 +4,10 @@ import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
-import service.coreapi.DoPaymentCommand;
-import service.coreapi.PaymentDoneEvent;
-import service.coreapi.PaymentRefundedEvent;
-import service.coreapi.RefundPaymentCommand;
+import service.coreapi.OrderCompensateTriggeredEvent;
+import service.coreapi.PaymentTriggeredEvent;
+import service.coreapi.TriggerCompensateOrderCommand;
+import service.coreapi.TriggerPaymentCommand;
 import service.payment.NotEnoughMoneyAccountException;
 import service.payment.Payment;
 
@@ -25,15 +25,15 @@ public class PaymentTest {
     @Test
     public void testDoPayment() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new DoPaymentCommand("1sd3gg54", "Alice", "5555", "30$"))
-                .expectEvents(new PaymentDoneEvent("1sd3gg54", "Alice", "5555", "30$"));
+                .when(new TriggerPaymentCommand("1sd3gg54", "Alice", "5555", "30$"))
+                .expectEvents(new PaymentTriggeredEvent("1sd3gg54", "Alice", "5555", "30$"));
     }
 
     /*
     @Test
     public void testMoneyWithdrawn() throws Exception {
         BankAccountEntity alice = new BankAccountEntity("asdf35g55", "Alice", "350$");
-        String newMoneyAccount = payment.on(new PaymentDoneEvent("1sd3gg54", "Alice", "5555", "30$"));
+        String newMoneyAccount = payment.on(new PaymentTriggeredEvent("1sd3gg54", "Alice", "5555", "30$"));
         alice.setMoneyAccount(newMoneyAccount);
         assertEquals("The money are withdrawn correctly!", "320$", alice.getMoneyAccount());
     }
@@ -42,23 +42,23 @@ public class PaymentTest {
     @Test
     public void testWrongPayment() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new DoPaymentCommand("1sd3gg54", "Alice", "5555", "630$"))
+                .when(new TriggerPaymentCommand("1sd3gg54", "Alice", "5555", "630$"))
                 .expectNoEvents()
                 .expectException(NotEnoughMoneyAccountException.class);
     }
 
     @Test
     public void testRefundPayment() throws Exception {
-        fixture.given(new PaymentDoneEvent("1sd3gg54", "Alice", "5555", "30$"))
-                .when(new RefundPaymentCommand("1sd3gg54", "Alice", "5555", "30$"))
-                .expectEvents(new PaymentRefundedEvent("1sd3gg54", "Alice", "5555", "30$"));
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "Alice", "5555", "30$"))
+                .when(new TriggerCompensateOrderCommand("1sd3gg54", "Alice", "5555", "30$"))
+                .expectEvents(new OrderCompensateTriggeredEvent("1sd3gg54", "Alice", "5555", "30$"));
     }
 
     /*
     @Test
     public void testMoneyRefunded() throws Exception {
         BankAccountEntity alice = new BankAccountEntity("asdf35g55", "Alice", "350$");
-        String newMoneyAccount = payment.on(new PaymentRefundedEvent("1sd3gg54",  "Alice", "5555", "30$"));
+        String newMoneyAccount = payment.on(new OrderCompensateTriggeredEvent("1sd3gg54",  "Alice", "5555", "30$"));
         alice.setMoneyAccount(newMoneyAccount);
         assertEquals("The money are withdrawn correctly!", "380$", alice.getMoneyAccount());
     }

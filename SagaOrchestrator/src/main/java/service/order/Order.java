@@ -8,6 +8,8 @@ import service.SagaOrchestratorApplication;
 import service.coreapi.*;
 import service.entities.OrderEntity;
 
+import java.util.UUID;
+
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 
@@ -24,27 +26,25 @@ public class Order {
     }
 
     @CommandHandler
-    public Order(CreateOrderCommand command) {
-        apply(new OrderCreatedEvent(command.getOrderId(), command.getUser(),
-                command.getArticle(), command.getQuantity(), command.getPrice()));
+    public Order(StartSagaCommand cmd) {
+        apply(new SagaStartedEvent(cmd.getOrderId(), cmd.getUser(), cmd.getArticle(), cmd.getQuantity(), cmd.getPrice()));
     }
 
     @CommandHandler
-    public void handle(DeleteOrderCommand command) {
-        apply(new OrderDeletedEvent(command.getOrderId(), command.getUser(),
-                command.getArticle(), command.getQuantity(), command.getPrice()));
+    public void handle(DeleteOrderCommand cmd) {
+        apply(new OrderDeletedEvent(cmd.getOrderId(), cmd.getUser(), cmd.getArticle(), cmd.getQuantity(), cmd.getPrice()));
     }
 
     @CommandHandler
-    public void handle(EndTheSagaCommand command) {
-        apply(new OrderDeletedEvent(command.getOrderId(), command.getUser(),
-                command.getArticle(), command.getQuantity(), command.getPrice()));
+    public void handle(EndSagaOrderCommand cmd) {
+        apply(new SagaOrderEndedEvent(cmd.getOrderId(), cmd.getUser(), cmd.getArticle(), cmd.getQuantity(), cmd.getPrice()));
     }
 
 
 
     @EventSourcingHandler
-    public OrderEntity on(OrderCreatedEvent event) {
+    public OrderEntity on(SagaStartedEvent event) {
+        SagaOrchestratorApplication.sagaId = UUID.randomUUID().toString();
         System.out.println("\n--------------------------------------------------- Start Saga " +
                 SagaOrchestratorApplication.sagaId + " ----------------------------------------------------");
         SagaOrchestratorApplication.logger.info("Start Saga " + SagaOrchestratorApplication.sagaId + "\n");
@@ -75,7 +75,7 @@ public class Order {
     }
 
     @EventSourcingHandler
-    public void on(TheSagaEndedEvent event) {
+    public void on(SagaOrderEndedEvent event) {
 
     }
 

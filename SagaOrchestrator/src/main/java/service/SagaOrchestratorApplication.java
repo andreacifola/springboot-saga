@@ -43,11 +43,11 @@ public class SagaOrchestratorApplication {
     /*
     private static void dispatchSingleServices(CommandBus commandBus, String orderId, String accountId, String stockId) {
 
-        commandBus.dispatch(asCommandMessage(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$")));
+        commandBus.dispatch(asCommandMessage(new StartSagaCommand(orderId, "Alice", "shirt", 2, "30$")));
         commandBus.dispatch(asCommandMessage(new DeleteOrderCommand(orderId, "Alice", "shirt", 2, "30$")));
-        commandBus.dispatch(asCommandMessage(new DoPaymentCommand(accountId, "Alice", "5555", "30$")));
-        commandBus.dispatch(asCommandMessage(new RefundPaymentCommand(accountId, "Alice", "5555", "30$")));
-        commandBus.dispatch(asCommandMessage(new UpdateStockCommand(stockId, "shirt", "9876", 2)));
+        commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(accountId, "Alice", "5555", "30$")));
+        commandBus.dispatch(asCommandMessage(new TriggerCompensateOrderCommand(accountId, "Alice", "5555", "30$")));
+        commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(stockId, "shirt", "9876", 2)));
     }
 
     private static void sendSagaServices(CommandGateway commandGateway, String orderId, String accountId, String articleId) {
@@ -59,7 +59,7 @@ public class SagaOrchestratorApplication {
                 sagaId + " ---------------------------------------------------");
         logger.info("Create Order " + sagaId + "\n");
 
-        commandGateway.send(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$"));
+        commandGateway.send(new StartSagaCommand(orderId, "Alice", "shirt", 2, "30$"));
 
         System.out.println("\n---------------------------------------------------- End Saga " +
                 sagaId + " -----------------------------------------------------");

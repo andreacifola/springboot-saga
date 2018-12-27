@@ -12,9 +12,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.EndSagaOrderCommand;
-import service.coreapi.OrderCreatedEvent;
 import service.coreapi.OrderDeletedEvent;
+import service.coreapi.SagaStartedEvent;
+import service.coreapi.TriggerEndSagaOrderCommand;
 import service.entities.OrderEntity;
 
 
@@ -30,7 +30,7 @@ public class OrderConsumer {
     }
 
     @EventHandler
-    public OrderEntity on(OrderCreatedEvent event) {
+    public OrderEntity on(SagaStartedEvent event) {
         order.setOrderID(event.getOrderId());
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());
@@ -50,7 +50,7 @@ public class OrderConsumer {
         System.out.println("\nDeleting the order...");
         printOrderElements();
 
-        commandGateway.send(new EndSagaOrderCommand(event.getOrderId(),
+        commandGateway.send(new TriggerEndSagaOrderCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
         return order;
     }
