@@ -1,7 +1,9 @@
 package service.config;
 
+import com.mongodb.MongoClient;
 import org.axonframework.eventsourcing.eventstore.EventStorageEngine;
-import org.axonframework.eventsourcing.eventstore.inmemory.InMemoryEventStorageEngine;
+import org.axonframework.mongo.DefaultMongoTemplate;
+import org.axonframework.mongo.eventsourcing.eventstore.MongoEventStorageEngine;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,12 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    //Configuration for axon event storage
+    //Configuration for axon event storage with MongoDB
     @Bean
-    public EventStorageEngine eventStorageEngine() {
-        return new InMemoryEventStorageEngine();
+    public EventStorageEngine eventStore(MongoClient client) {
+        return new MongoEventStorageEngine(new DefaultMongoTemplate(client, "paymentevents"));
     }
-
     // Configurations for amqp
     @Bean
     public Exchange eventsExchangePayment() {

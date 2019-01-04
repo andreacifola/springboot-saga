@@ -27,7 +27,7 @@ public class StockConsumer {
 
     private final transient CommandGateway commandGateway;
     private final transient CommandBus commandBus;
-    private WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt", 0);
+    private WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt", 23);
 
     public StockConsumer(CommandGateway commandGateway, CommandBus commandBus) {
         this.commandGateway = commandGateway;
