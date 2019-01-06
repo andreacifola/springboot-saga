@@ -38,6 +38,11 @@ public class Config {
     }
 
     @Bean
+    public Queue eventsQueueQueryHandler() {
+        return QueueBuilder.durable("QueryHandler").build();
+    }
+
+    @Bean
     public Binding eventsBindingOrder() {
         return BindingBuilder.bind(eventsQueueOrder()).to(eventsExchange()).with("orderamqp").noargs();
     }
@@ -52,14 +57,23 @@ public class Config {
         return BindingBuilder.bind(eventsQueueStock()).to(eventsExchange()).with("stockamqp").noargs();
     }
 
+    @Bean
+    public Binding eventsBindingQueryHandler() {
+        return BindingBuilder.bind(eventsQueueQueryHandler()).to(eventsExchange()).with("queryhandleramqp").noargs();
+    }
+
     @Autowired
     public void configure(AmqpAdmin admin) {
         admin.declareExchange(eventsExchange());
+
         admin.declareQueue(eventsQueueOrder());
         admin.declareQueue(eventsQueuePayment());
         admin.declareQueue(eventsQueueStock());
+        admin.declareQueue(eventsQueueQueryHandler());
+
         admin.declareBinding(eventsBindingOrder());
         admin.declareBinding(eventsBindingPayment());
         admin.declareBinding(eventsBindingStock());
+        admin.declareBinding(eventsBindingQueryHandler());
     }
 }

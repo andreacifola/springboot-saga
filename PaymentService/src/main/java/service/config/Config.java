@@ -17,6 +17,7 @@ public class Config {
     public EventStorageEngine eventStore(MongoClient client) {
         return new MongoEventStorageEngine(new DefaultMongoTemplate(client, "paymentevents"));
     }
+
     // Configurations for amqp
     @Bean
     public Exchange eventsExchangePayment() {

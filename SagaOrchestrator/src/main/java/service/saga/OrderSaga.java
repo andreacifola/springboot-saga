@@ -59,10 +59,11 @@ public class OrderSaga {
         associateWith("paymentId", paymentId);
         stockId = UUID.randomUUID().toString();
         associateWith("stockId", stockId);
+        accountId = UUID.randomUUID().toString();
 
         System.out.println("\n" + repeat("-", 49) + " Execute Payment " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 49));
         SagaOrchestratorApplication.logger.info("Execute Payment " + SagaOrchestratorApplication.sagaId + "\n");
-        commandGateway.send(new TriggerPaymentCommand(SagaOrchestratorApplication.accountId, event.getUser(), paymentId, event.getPrice()));
+        commandGateway.send(new TriggerPaymentCommand(accountId, event.getUser(), paymentId, event.getPrice()));
     }
 
     @SagaEventHandler(associationProperty = "paymentId")
@@ -78,7 +79,7 @@ public class OrderSaga {
 
         System.out.println("\n" + repeat("-", 51) + " Update Stock " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 51));
         SagaOrchestratorApplication.logger.info("Update Stock " + SagaOrchestratorApplication.sagaId + "\n");
-        commandGateway.send(new TriggerStockUpdateCommand(SagaOrchestratorApplication.stockId, article, stockId, quantity));
+        commandGateway.send(new TriggerStockUpdateCommand(stockId, article, stockId, quantity));
     }
 
     @SagaEventHandler(associationProperty = "paymentId")

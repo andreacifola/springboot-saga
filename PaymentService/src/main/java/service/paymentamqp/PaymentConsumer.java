@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import service.coreapi.*;
 import service.entities.BankAccountEntity;
 
+import java.util.UUID;
+
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 
@@ -24,7 +26,9 @@ public class PaymentConsumer {
 
     private final CommandGateway commandGateway;
     private final CommandBus commandBus;
-    private BankAccountEntity alice = new BankAccountEntity("sd573jn3", "Alice", "350$");
+
+    private String accountId = UUID.randomUUID().toString();
+    private BankAccountEntity alice = new BankAccountEntity(accountId, "Alice", "350$");
 
     public PaymentConsumer(CommandGateway commandGateway, CommandBus commandBus) {
         this.commandGateway = commandGateway;
@@ -33,6 +37,8 @@ public class PaymentConsumer {
 
     @EventHandler
     public void on(PaymentTriggeredEvent event) {
+        //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
+        accountId = UUID.randomUUID().toString();
         Integer moneyAccount = Integer.valueOf(alice.getMoneyAccount().substring(0, alice.getMoneyAccount().length() - 1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length() - 1));
 
@@ -56,6 +62,8 @@ public class PaymentConsumer {
 
     @EventHandler
     public void on(PaymentRefundedEvent event) {
+        //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
+        accountId = UUID.randomUUID().toString();
         Integer moneyAccount = Integer.valueOf(alice.getMoneyAccount().substring(0, alice.getMoneyAccount().length()-1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length()-1));
 
