@@ -10,12 +10,14 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.serialization.Serializer;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import service.coreapi.OrderDeletedEvent;
 import service.coreapi.SagaStartedEvent;
 import service.coreapi.TriggerEndSagaOrderCommand;
-import service.entities.OrderEntity;
+import service.database.OrderEntity;
+import service.database.OrderEntityRepository;
 
 
 @ProcessingGroup("orderEvents")
@@ -25,18 +27,26 @@ public class OrderConsumer {
     private OrderEntity order = new OrderEntity();
     private final CommandGateway commandGateway;
 
+    @Autowired
+    private OrderEntityRepository repository;
+
     public OrderConsumer(CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
     }
 
     @EventHandler
     public OrderEntity on(SagaStartedEvent event) {
-        order.setOrderID(event.getOrderId());
+
+        //TODO rimuovere alla fine
+        repository.deleteAll();
+
+        order.setOrderId(event.getOrderId());
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());
         order.setQuantity(event.getQuantity());
         order.setPrice(event.getPrice());
 
+        repository.save(order);
         printOrderElements();
 
         return order;
@@ -44,10 +54,15 @@ public class OrderConsumer {
 
     @EventHandler
     public OrderEntity on(OrderDeletedEvent event) {
+
+        OrderEntity oldOrder = repository.findByOrderId(event.getOrderId());
+        repository.delete(oldOrder);
+
         order = new OrderEntity();
 
         System.out.flush();
         System.out.println("\nDeleting the order...");
+
         printOrderElements();
 
         commandGateway.send(new TriggerEndSagaOrderCommand(event.getOrderId(),
@@ -56,7 +71,7 @@ public class OrderConsumer {
     }
 
     private void printOrderElements() {
-        System.out.println("\nOrder Id =  " + order.getOrderID());
+        System.out.println("\nOrder Id =  " + order.getOrderId());
         System.out.println("User =      " + order.getUser());
         System.out.println("Article =   " + order.getArticle());
         System.out.println("Quantity =  " + order.getQuantity());

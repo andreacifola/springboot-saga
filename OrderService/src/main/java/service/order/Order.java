@@ -5,7 +5,7 @@ import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
 import service.coreapi.*;
-import service.entities.OrderEntity;
+import service.database.OrderEntity;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
@@ -44,7 +44,7 @@ public class Order {
     @EventSourcingHandler
     public OrderEntity on(OrderCreatedEvent event) {
         this.orderId = event.getOrderId();
-        order.setOrderID(orderId);
+        order.setOrderId(orderId);
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());
         order.setQuantity(event.getQuantity());
@@ -56,7 +56,7 @@ public class Order {
 
     @EventSourcingHandler
     public OrderEntity on(OrderDeletedEvent event) {
-        order.setOrderID(null);
+        order.setOrderId(null);
         order.setUser(null);
         order.setArticle(null);
         order.setQuantity(null);
@@ -75,7 +75,7 @@ public class Order {
     }
 
     private void printOrderElements() {
-        System.out.println("\nOrder Id =  " + order.getOrderID());
+        System.out.println("\nOrder Id =  " + order.getOrderId());
         System.out.println("User =      " + order.getUser());
         System.out.println("Article =   " + order.getArticle());
         System.out.println("Quantity =  " + order.getQuantity());

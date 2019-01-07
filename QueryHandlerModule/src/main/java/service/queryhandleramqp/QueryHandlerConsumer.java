@@ -31,6 +31,9 @@ public class QueryHandlerConsumer {
     @EventHandler
     public void on(SagaStartedEvent event) {
 
+        //TODO rimuovere alla fine
+        repository.deleteAll();
+
         this.orderId = event.getOrderId();
         GlobalInformation info = new GlobalInformation(event.getOrderId(), event.getUser(), event.getArticle(), event.getQuantity(), null, event.getPrice());
         repository.save(info);

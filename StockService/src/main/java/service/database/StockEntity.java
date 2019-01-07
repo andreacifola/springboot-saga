@@ -1,4 +1,4 @@
-package service.entities;
+package service.database;
 
 
 import lombok.NoArgsConstructor;

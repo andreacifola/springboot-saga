@@ -16,7 +16,7 @@ import service.coreapi.AbortStockCommand;
 import service.coreapi.StockUpdateTriggeredEvent;
 import service.coreapi.TriggerStockUpdateCommand;
 import service.coreapi.UpdateStockCommand;
-import service.entities.WareHouseEntity;
+import service.database.WareHouseEntity;
 
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 

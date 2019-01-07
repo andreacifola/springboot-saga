@@ -1,34 +1,36 @@
-package service.entities;
+package service.database;
 
+
+import org.springframework.data.annotation.Id;
 
 public class OrderEntity {
 
-    private String orderID;
+    @Id
+    private String id;
+
+    private String orderId;
     private String user;
     private String article;
     private Integer quantity;
     private String price;
-    //private String date;
-    //private String hour;
 
-    public OrderEntity(String orderID, String user, String article, Integer quantity, String price) {
-        this.orderID = orderID;
+    public OrderEntity() {
+    }
+
+    public OrderEntity(String orderId, String user, String article, Integer quantity, String price) {
+        this.orderId = orderId;
         this.user = user;
         this.article = article;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public OrderEntity() {
-
+    public String getOrderId() {
+        return orderId;
     }
 
-    public String getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getUser() {
