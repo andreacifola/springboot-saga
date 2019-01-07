@@ -2,26 +2,30 @@ package service.database;
 
 
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 @NoArgsConstructor
 public class StockEntity {
 
-    private String articleID;
+    @Id
+    private String id;
+
+    private String articleId;
     private String article;
     private Integer quantity;
 
-    public StockEntity(String articleID, String article, Integer quantity) {
-        this.articleID = articleID;
+    public StockEntity(String articleId, String article, Integer quantity) {
+        this.articleId = articleId;
         this.article = article;
         this.quantity = quantity;
     }
 
-    public String getArticleID() {
-        return articleID;
+    public String getArticleId() {
+        return articleId;
     }
 
-    public void setArticleID(String articleID) {
-        this.articleID = articleID;
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
     }
 
     public String getArticle() {
