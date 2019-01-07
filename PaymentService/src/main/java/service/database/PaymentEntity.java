@@ -1,30 +1,32 @@
 package service.database;
 
 
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
-@NoArgsConstructor
 public class PaymentEntity {
 
-    private String paymentID;
+    @Id
+    private String id;
+
+    private String paymentId;
     private String user;
-    private Float amount;
-    //private String date;
-    //private String hour;
+    private String amount;
 
+    public PaymentEntity() {
+    }
 
-    public PaymentEntity(String paymentID, String user, Float amount) {
-        this.paymentID = paymentID;
+    public PaymentEntity(String paymentId, String user, String amount) {
+        this.paymentId = paymentId;
         this.user = user;
         this.amount = amount;
     }
 
-    public String getPaymentID() {
-        return paymentID;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setPaymentID(String paymentID) {
-        this.paymentID = paymentID;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getUser() {
@@ -35,11 +37,11 @@ public class PaymentEntity {
         this.user = user;
     }
 
-    public Float getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

@@ -1,14 +1,19 @@
 package service.database;
 
 
-import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
-@NoArgsConstructor
 public class BankAccountEntity {
+
+    @Id
+    private String id;
 
     private String accountId;
     private String user;
     private String moneyAccount;
+
+    public BankAccountEntity() {
+    }
 
     public BankAccountEntity(String accountId, String user, String moneyAccount) {
         this.accountId = accountId;
