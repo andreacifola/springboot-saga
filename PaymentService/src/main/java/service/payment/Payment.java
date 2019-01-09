@@ -22,42 +22,50 @@ public class Payment {
 
     @CommandHandler
     public Payment(TriggerPaymentCommand command) {
-        apply(new PaymentTriggeredEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new PaymentTriggeredEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(EnableStockUpdateCommand command) {
-        apply(new StockUpdateEnabledEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new StockUpdateEnabledEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(TriggerCompensateOrderCommand command) {
-        apply(new OrderCompensateTriggeredEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new OrderCompensateTriggeredEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(DoPaymentCommand command) {
-        apply(new PaymentDoneEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new PaymentDoneEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(AbortPaymentCommand command) {
-        apply(new PaymentAbortedEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new PaymentAbortedEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(TriggerEndSagaPaymentCommand command) {
-        apply(new EndSagaPaymentTriggeredEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new EndSagaPaymentTriggeredEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(RefundPaymentCommand command) {
-        apply(new PaymentRefundedEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new PaymentRefundedEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
     @CommandHandler
     public void handle(EndSagaPaymentCommand command) {
-        apply(new SagaPaymentEndedEvent(command.getPaymentId(), command.getUser(), command.getAmount()));
+        apply(new SagaPaymentEndedEvent(command.getPaymentId(),
+                command.getAccountId(), command.getUser(), command.getAmount()));
     }
 
 

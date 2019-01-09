@@ -51,7 +51,7 @@ public class PaymentConsumer {
         //TODO eliminare quando è finito
         paymentEntityRepository.deleteAll();
 
-        BankAccountEntity user = bankAccountEntityRepository.findByUser("Alice");
+        BankAccountEntity user = bankAccountEntityRepository.findByUser(event.getUser());
 
         Integer moneyAccount = Integer.valueOf(user.getMoneyAccount().substring(0, user.getMoneyAccount().length() - 1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length() - 1));
@@ -69,14 +69,14 @@ public class PaymentConsumer {
             System.out.println("Alice new money account =       " + user.getMoneyAccount() + "\n");
 
             bankAccountEntityRepository.save(user);
-            paymentEntityRepository.save(new PaymentEntity(paymentId, user.getUser(), event.getAmount()));
+            paymentEntityRepository.save(new PaymentEntity(paymentId, user.getAccountId(), user.getUser(), event.getAmount()));
 
-            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount())));
-            commandGateway.send(new DoPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
+            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount())));
+            commandGateway.send(new DoPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount()));
         } else {
             System.out.println("\nYou don't have enough money in your bank account!\n");
-            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount())));
-            commandGateway.send(new AbortPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
+            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount())));
+            commandGateway.send(new AbortPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount()));
         }
     }
 
@@ -103,7 +103,7 @@ public class PaymentConsumer {
         PaymentEntity paymentEntity = paymentEntityRepository.findByPaymentId(event.getPaymentId());
         paymentEntityRepository.delete(paymentEntity);
 
-        commandGateway.send(new TriggerEndSagaPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
+        commandGateway.send(new TriggerEndSagaPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount()));
     }
 
     @Bean

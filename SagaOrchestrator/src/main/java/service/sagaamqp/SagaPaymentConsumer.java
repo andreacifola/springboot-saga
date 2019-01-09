@@ -26,19 +26,19 @@ public class SagaPaymentConsumer {
 
     @EventHandler
     public void on(PaymentDoneEvent event) {
-        commandGateway.send(new EnableStockUpdateCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
+        commandGateway.send(new EnableStockUpdateCommand(event.getPaymentId(), event.getAccountId(), event.getUser(), event.getAmount()));
     }
 
     @EventHandler
     public void on(PaymentAbortedEvent event) {
 
-        commandGateway.send(new TriggerCompensateOrderCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
+        commandGateway.send(new TriggerCompensateOrderCommand(event.getPaymentId(), event.getAccountId(), event.getUser(), event.getAmount()));
     }
 
     @EventHandler
     public void on(EndSagaPaymentTriggeredEvent event) {
 
-        commandGateway.send(new EndSagaPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
+        commandGateway.send(new EndSagaPaymentCommand(event.getPaymentId(), event.getAccountId(), event.getUser(), event.getAmount()));
     }
 
     @Bean

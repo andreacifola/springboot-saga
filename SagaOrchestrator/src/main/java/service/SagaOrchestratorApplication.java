@@ -14,9 +14,6 @@ import java.util.logging.Logger;
 public class SagaOrchestratorApplication {
 
     public static String sagaId;
-    public static String orderId;
-    public static String accountId;
-    public static String stockId;
 
     public static Logger logger = LogFile.writeLogFile();
 
@@ -27,18 +24,17 @@ public class SagaOrchestratorApplication {
         CommandGateway commandGateway = config.getBean(CommandGateway.class);
 
         sagaId = UUID.randomUUID().toString();
-        orderId = UUID.randomUUID().toString();
-        accountId = UUID.randomUUID().toString();
-        stockId = UUID.randomUUID().toString();
 
         System.out.println("\nSaga:    " + sagaId);
-        System.out.println("Order:   " + orderId);
-        System.out.println("Order:   " + accountId);
-        System.out.println("Stock:   " + stockId);
 
         //dispatchSingleServices(commandBus, orderId, accountId, stockId);
         //sendSagaServices(commandGateway, orderId, accountId, stockId);
     }
+
+
+
+
+
 
     /*
     private static void dispatchSingleServices(CommandBus commandBus, String orderId, String accountId, String stockId) {

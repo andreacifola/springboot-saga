@@ -9,14 +9,16 @@ public class PaymentEntity {
     private String id;
 
     private String paymentId;
+    private String accountId;
     private String user;
     private String amount;
 
     public PaymentEntity() {
     }
 
-    public PaymentEntity(String paymentId, String user, String amount) {
+    public PaymentEntity(String paymentId, String accountId, String user, String amount) {
         this.paymentId = paymentId;
+        this.accountId = accountId;
         this.user = user;
         this.amount = amount;
     }
@@ -27,6 +29,14 @@ public class PaymentEntity {
 
     public void setPaymentId(String paymentId) {
         this.paymentId = paymentId;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getUser() {

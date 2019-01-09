@@ -13,7 +13,6 @@ import java.util.UUID;
 public class PaymentServiceApplication {
 
     private static BankAccountEntityRepository bankAccountEntityRepository;
-    private static String accountId = UUID.randomUUID().toString();
 
     @Autowired
     public PaymentServiceApplication(BankAccountEntityRepository bankAccountEntityRepository) {
@@ -23,6 +22,7 @@ public class PaymentServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(PaymentServiceApplication.class, args);
 
+        String accountId = UUID.randomUUID().toString();
         bankAccountEntityRepository.deleteAll();
 
         BankAccountEntity alice = new BankAccountEntity(accountId, "Alice", "350$");

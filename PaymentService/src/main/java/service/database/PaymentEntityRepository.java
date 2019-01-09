@@ -6,6 +6,8 @@ public interface PaymentEntityRepository extends MongoRepository<PaymentEntity, 
 
     PaymentEntity findByPaymentId(String paymentId);
 
+    PaymentEntity findByAccountId(String accountId);
+
     PaymentEntity findByUser(String user);
 
     PaymentEntity findByAmount(String amount);

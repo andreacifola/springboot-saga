@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OrderService/OrderService.iml" filepath="$PROJECT_DIR$/OrderService/OrderService.iml" />
       <module fileurl="file://$PROJECT_DIR$/PaymentService/PaymentService.iml" filepath="$PROJECT_DIR$/PaymentService/PaymentService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QueryHandlerModule/QueryHandlerModule.iml" filepath="$PROJECT_DIR$/QueryHandlerModule/QueryHandlerModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/SagaOrchestrator/SagaOrchestrator.iml" filepath="$PROJECT_DIR$/SagaOrchestrator/SagaOrchestrator.iml" />
       <module fileurl="file://$PROJECT_DIR$/StockService/StockService.iml" filepath="$PROJECT_DIR$/StockService/StockService.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot-saga.iml" filepath="$PROJECT_DIR$/springboot-saga.iml" />

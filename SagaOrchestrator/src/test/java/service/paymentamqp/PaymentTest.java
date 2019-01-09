@@ -25,8 +25,8 @@ public class PaymentTest {
     @Test
     public void testDoPayment() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new TriggerPaymentCommand("1sd3gg54", "Alice", "30$"))
-                .expectEvents(new PaymentTriggeredEvent("1sd3gg54", "Alice", "30$"));
+                .when(new TriggerPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"));
     }
 
     /*
@@ -42,16 +42,16 @@ public class PaymentTest {
     @Test
     public void testWrongPayment() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new TriggerPaymentCommand("1sd3gg54", "Alice", "630$"))
+                .when(new TriggerPaymentCommand("1sd3gg54", "5555", "Alice", "630$"))
                 .expectNoEvents()
                 .expectException(NotEnoughMoneyAccountException.class);
     }
 
     @Test
     public void testRefundPayment() throws Exception {
-        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "Alice", "30$"))
-                .when(new TriggerCompensateOrderCommand("1sd3gg54", "Alice", "30$"))
-                .expectEvents(new OrderCompensateTriggeredEvent("1sd3gg54", "Alice", "30$"));
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new TriggerCompensateOrderCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new OrderCompensateTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"));
     }
 
     /*
