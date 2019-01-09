@@ -36,7 +36,7 @@ public class PaymentConsumer {
     @Autowired
     private PaymentEntityRepository paymentEntityRepository;
 
-    private String accountId = UUID.randomUUID().toString();
+    private String paymentId = UUID.randomUUID().toString();
 
     public PaymentConsumer(CommandGateway commandGateway, CommandBus commandBus) {
         this.commandGateway = commandGateway;
@@ -46,7 +46,7 @@ public class PaymentConsumer {
     @EventHandler
     public void on(PaymentTriggeredEvent event) {
         //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
-        accountId = UUID.randomUUID().toString();
+        paymentId = UUID.randomUUID().toString();
 
         //TODO eliminare quando è finito
         paymentEntityRepository.deleteAll();
@@ -58,7 +58,8 @@ public class PaymentConsumer {
 
         if (moneyAccount >= price) {
 
-            System.out.println("\nAccount Id =                    " + event.getAccountId());
+            System.out.println("\nAccount Id =                    " + user.getAccountId());
+            System.out.println("Payment Id =                    " + event.getPaymentId());
             System.out.println("Username =                      " + event.getUser());
             System.out.println(event.getUser() + " money account =           " + user.getMoneyAccount());
             System.out.println("Price of the ordered article =  " + event.getAmount());
@@ -68,21 +69,21 @@ public class PaymentConsumer {
             System.out.println("Alice new money account =       " + user.getMoneyAccount() + "\n");
 
             bankAccountEntityRepository.save(user);
-            paymentEntityRepository.save(new PaymentEntity(accountId, user.getUser(), event.getAmount()));
+            paymentEntityRepository.save(new PaymentEntity(paymentId, user.getUser(), event.getAmount()));
 
-            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount())));
-            commandGateway.send(new DoPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
+            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount())));
+            commandGateway.send(new DoPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
         } else {
             System.out.println("\nYou don't have enough money in your bank account!\n");
-            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount())));
-            commandGateway.send(new AbortPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
+            commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount())));
+            commandGateway.send(new AbortPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
         }
     }
 
     @EventHandler
     public void on(PaymentRefundedEvent event) {
         //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
-        accountId = UUID.randomUUID().toString();
+        paymentId = UUID.randomUUID().toString();
 
         BankAccountEntity user = bankAccountEntityRepository.findByUser("Alice");
 
@@ -102,7 +103,7 @@ public class PaymentConsumer {
         PaymentEntity paymentEntity = paymentEntityRepository.findByPaymentId(event.getPaymentId());
         paymentEntityRepository.delete(paymentEntity);
 
-        commandGateway.send(new TriggerEndSagaPaymentCommand(event.getAccountId(), event.getUser(), event.getPaymentId(), event.getAmount()));
+        commandGateway.send(new TriggerEndSagaPaymentCommand(event.getPaymentId(), event.getUser(), event.getAmount()));
     }
 
     @Bean

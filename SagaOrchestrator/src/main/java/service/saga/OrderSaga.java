@@ -26,7 +26,6 @@ public class OrderSaga {
     private int quantity;
     private String price;
 
-    private String accountId;
     private String amount;
 
     private String paymentId;
@@ -59,18 +58,16 @@ public class OrderSaga {
         associateWith("paymentId", paymentId);
         stockId = UUID.randomUUID().toString();
         associateWith("stockId", stockId);
-        accountId = UUID.randomUUID().toString();
 
         System.out.println("\n" + repeat("-", 49) + " Execute Payment " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 49));
         SagaOrchestratorApplication.logger.info("Execute Payment " + SagaOrchestratorApplication.sagaId + "\n");
-        commandGateway.send(new TriggerPaymentCommand(accountId, event.getUser(), paymentId, event.getPrice()));
+        commandGateway.send(new TriggerPaymentCommand(paymentId, event.getUser(), event.getPrice()));
     }
 
     @SagaEventHandler(associationProperty = "paymentId")
     public void on(StockUpdateEnabledEvent event) {
-        this.accountId = event.getAccountId();
         this.amount = event.getAmount();
-        System.out.println("\nAccount Id =" + repeat(" ", 35) + event.getAccountId());
+        System.out.println("\nPayment Id =" + repeat(" ", 35) + event.getPaymentId());
         System.out.println("Username =" + repeat(" ", 37) + event.getUser());
         System.out.println("Money subtracted due to the ordered article =  " + event.getAmount());
 
@@ -99,7 +96,7 @@ public class OrderSaga {
         SagaOrchestratorApplication.logger.info("Abort Stock " + SagaOrchestratorApplication.sagaId + "\n");
         System.out.println("\n" + repeat("-", 57) + " Compensate the Payment and the Order " + repeat("-", 57));
 
-        commandGateway.send(new RefundPaymentCommand(accountId, user, paymentId, amount));
+        commandGateway.send(new RefundPaymentCommand(paymentId, user, amount));
         System.out.println(repeat("-", 66) + " Payment Compensated " + repeat("-", 66));
         SagaOrchestratorApplication.logger.info("Payment Compensated " + SagaOrchestratorApplication.sagaId + "\n");
 
