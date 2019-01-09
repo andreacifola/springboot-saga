@@ -52,7 +52,7 @@ public class StockConsumer {
 
         if (warehouseEntity.getAvailability() >= event.getQuantity()) {
 
-            System.out.println("\nArticle Id =                                 " + event.getArticleId());
+            System.out.println("\nStock Id =                                 " + event.getStockId());
             System.out.println("Number of " + event.getArticle() +
                     "s inside the warehouse =      " + warehouseEntity.getAvailability());
             System.out.println("Number of " + event.getArticle() +
@@ -64,14 +64,14 @@ public class StockConsumer {
                     "s inside the warehouse =  " + warehouseEntity.getAvailability() + "\n");
 
             warehouseEntityRepository.save(warehouseEntity);
-            stockEntityRepository.save(new StockEntity(event.getArticleId(), event.getArticle(), event.getQuantity()));
+            stockEntityRepository.save(new StockEntity(event.getStockId(), event.getArticle(), event.getQuantity()));
 
-            commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(event.getArticleId(), event.getArticle(), event.getStockId(), event.getQuantity())));
-            commandGateway.send(new UpdateStockCommand(event.getArticleId(), event.getArticle(), event.getStockId(), event.getQuantity()));
+            commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(event.getStockId(), event.getArticle(), event.getQuantity())));
+            commandGateway.send(new UpdateStockCommand(event.getStockId(), event.getArticle(), event.getQuantity()));
         } else {
             System.out.println("\nYou don't have enough article in the warehouse!\n");
-            commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(event.getArticleId(), event.getArticle(), event.getStockId(), event.getQuantity())));
-            commandGateway.send(new AbortStockCommand(event.getArticleId(), event.getArticle(), event.getStockId(), event.getQuantity()));
+            commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(event.getStockId(), event.getArticle(), event.getQuantity())));
+            commandGateway.send(new AbortStockCommand(event.getStockId(), event.getArticle(), event.getQuantity()));
 
         }
     }

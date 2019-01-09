@@ -78,7 +78,7 @@ public class OrderSaga {
 
         System.out.println("\n" + repeat("-", 51) + " Update Stock " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 51));
         SagaOrchestratorApplication.logger.info("Update Stock " + SagaOrchestratorApplication.sagaId + "\n");
-        commandGateway.send(new TriggerStockUpdateCommand(stockId, article, stockId, quantity));
+        commandGateway.send(new TriggerStockUpdateCommand(stockId, article, quantity));
     }
 
     @SagaEventHandler(associationProperty = "paymentId")
@@ -135,7 +135,7 @@ public class OrderSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "stockId")
     public void on(StockSagaEndedEvent event) {
-        System.out.println("\nArticle Id =" + repeat(" ", 35) + event.getArticleId());
+        System.out.println("\nStock Id =" + repeat(" ", 35) + event.getStockId());
         System.out.println("Article =" + repeat(" ", 38) + event.getArticle());
         System.out.println("Quantity of the ordered article =" + repeat(" ", 14) + event.getQuantity());
         System.out.println("\n" + repeat("-", 51) + " Stock Updated " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 50) + "\n");

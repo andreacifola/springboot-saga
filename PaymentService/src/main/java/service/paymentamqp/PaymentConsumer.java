@@ -85,7 +85,7 @@ public class PaymentConsumer {
         //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
         paymentId = UUID.randomUUID().toString();
 
-        BankAccountEntity user = bankAccountEntityRepository.findByUser("Alice");
+        BankAccountEntity user = bankAccountEntityRepository.findByUser(event.getUser());
 
         Integer moneyAccount = Integer.valueOf(user.getMoneyAccount().substring(0, user.getMoneyAccount().length() - 1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length()-1));

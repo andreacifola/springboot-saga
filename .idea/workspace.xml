@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="63070936-b212-4880-8cb4-3fa3b12866e4" name="Default" comment="Added materialized view for Payment service">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="63070936-b212-4880-8cb4-3fa3b12866e4" name="Default" comment="Added accountId as parameter in the Command and Event methods + added accountId in PaymentEntity for saving into the db">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaymentService/src/main/java/service/PaymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/PaymentService/src/main/java/service/PaymentServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaymentService/src/main/java/service/coreapi/PaymentApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/PaymentService/src/main/java/service/coreapi/PaymentApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntityRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntityRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PaymentService/src/main/java/service/payment/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/PaymentService/src/main/java/service/payment/Payment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/SagaOrchestratorApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/SagaOrchestratorApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/PaymentApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/PaymentApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/payment/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/payment/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/StockApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/StockApi.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaPaymentConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaPaymentConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/paymentamqp/PaymentTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/paymentamqp/PaymentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaStockConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaStockConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/stock/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/stock/Stock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/saga/OrderSagaTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/saga/OrderSagaTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/stockamqp/StockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/stockamqp/StockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StockService/src/main/java/service/coreapi/StockApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/StockService/src/main/java/service/coreapi/StockApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StockService/src/main/java/service/stock/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/StockService/src/main/java/service/stock/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -39,73 +33,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="33">
-              <caret line="71" column="91" selection-start-line="71" selection-start-column="91" selection-end-line="71" selection-end-column="91" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaPaymentConsumer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="419">
-              <caret line="40" column="98" selection-start-line="40" selection-start-column="98" selection-end-line="40" selection-end-column="98" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="51" column="28" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="28" />
+            <state relative-caret-position="1963">
+              <caret line="137" column="35" selection-start-line="137" selection-start-column="35" selection-end-line="137" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/payment/Payment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="864">
-              <caret line="67" column="78" selection-start-line="67" selection-start-column="78" selection-end-line="67" selection-end-column="78" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="11" column="29" selection-start-line="11" selection-start-column="29" selection-end-line="11" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntityRepository.java">
+        <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaStockConsumer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaOrderConsumer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
+            <state relative-caret-position="125">
+              <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,10 +57,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/PaymentServiceApplication.java">
+        <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+            <state relative-caret-position="341">
+              <caret line="73" column="93" selection-start-line="73" selection-start-column="93" selection-end-line="73" selection-end-column="93" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -171,12 +114,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/StockService/src/main/java/service/entities/StockEntity.java" />
-        <option value="$PROJECT_DIR$/OrderService/src/main/java/service/coreapi/OrderApi.kt" />
-        <option value="$PROJECT_DIR$/StockService/src/main/java/service/coreapi/StockApi.kt" />
-        <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/OrderApi.kt" />
-        <option value="$PROJECT_DIR$/StockService/pom.xml" />
-        <option value="$PROJECT_DIR$/OrderService/src/main/java/service/OrderServiceApplication.java" />
         <option value="$PROJECT_DIR$/OrderService/src/main/java/service/config/Config.java" />
         <option value="$PROJECT_DIR$/StockService/src/main/java/service/config/Config.java" />
         <option value="$PROJECT_DIR$/OrderService/pom.xml" />
@@ -207,7 +144,6 @@
         <option value="$PROJECT_DIR$/StockService/src/main/java/service/database/StockEntity.java" />
         <option value="$PROJECT_DIR$/StockService/src/main/java/service/database/StockEntityRepository.java" />
         <option value="$PROJECT_DIR$/StockService/src/main/java/service/StockServiceApplication.java" />
-        <option value="$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java" />
         <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaOrderConsumer.java" />
         <option value="$PROJECT_DIR$/PaymentService/src/main/java/service/coreapi/PaymentApi.kt" />
         <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/PaymentApi.kt" />
@@ -216,12 +152,19 @@
         <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaPaymentConsumer.java" />
         <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/payment/Payment.java" />
         <option value="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/paymentamqp/PaymentTest.java" />
-        <option value="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/saga/OrderSagaTest.java" />
-        <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java" />
         <option value="$PROJECT_DIR$/PaymentService/src/main/java/service/PaymentServiceApplication.java" />
         <option value="$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntity.java" />
-        <option value="$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java" />
         <option value="$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntityRepository.java" />
+        <option value="$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java" />
+        <option value="$PROJECT_DIR$/StockService/src/main/java/service/coreapi/StockApi.kt" />
+        <option value="$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java" />
+        <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/StockApi.kt" />
+        <option value="$PROJECT_DIR$/StockService/src/main/java/service/stock/Stock.java" />
+        <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/stock/Stock.java" />
+        <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java" />
+        <option value="$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaStockConsumer.java" />
+        <option value="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/stockamqp/StockTest.java" />
+        <option value="$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/saga/OrderSagaTest.java" />
       </list>
     </option>
   </component>
@@ -305,81 +248,6 @@
             <path>
               <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
               <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-              <item name="coreapi" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-              <item name="database" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
-              <item name="PaymentService" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-              <item name="paymentamqp" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
@@ -492,7 +360,62 @@
               <item name="SagaOrchestrator" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="stock" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="SagaOrchestrator" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="StockService" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="StockService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="StockService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="StockService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="StockService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springboot-saga" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springboot-saga" type="462c0819:PsiDirectoryNode" />
+              <item name="StockService" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="coreapi" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -509,7 +432,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="true" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547024625813" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547026240098" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
@@ -878,7 +801,7 @@
       <workItem from="1545897075561" duration="5781000" />
       <workItem from="1546444631934" duration="957000" />
       <workItem from="1546504329792" duration="23192000" />
-      <workItem from="1546970124806" duration="5669000" />
+      <workItem from="1546970124806" duration="7345000" />
     </task>
     <task id="LOCAL-00001" summary="Added .gitignore file">
       <created>1544957912911</created>
@@ -1020,7 +943,14 @@
       <option name="project" value="LOCAL" />
       <updated>1547023124982</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Added accountId as parameter in the Command and Event methods + added accountId in PaymentEntity for saving into the db">
+      <created>1547024765724</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1547024765724</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1056,7 +986,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="156311000" />
+    <option name="totallyTimeSpent" value="157987000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1094,7 +1024,7 @@
       <window_info anchor="bottom" id="Docker" order="12" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="13" />
       <window_info anchor="bottom" id="Duplicate detector" order="14" weight="0.32876712" />
-      <window_info active="true" anchor="bottom" id="Run" order="15" visible="true" weight="0.3958904" />
+      <window_info active="true" anchor="bottom" id="Run" order="15" visible="true" weight="0.4178082" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1133,7 +1063,8 @@
     <MESSAGE value="Added materialized view for Payment service" />
     <MESSAGE value="Added materialized view for Stock service" />
     <MESSAGE value="Added paymentId as the Aggregate Identifier instead of the AccountId" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added paymentId as the Aggregate Identifier instead of the AccountId" />
+    <MESSAGE value="Added accountId as parameter in the Command and Event methods + added accountId in PaymentEntity for saving into the db" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added accountId as parameter in the Command and Event methods + added accountId in PaymentEntity for saving into the db" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -1272,38 +1203,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/stock/Stock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="23" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/config/Config.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="16" column="5" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
-          <folding>
-            <element signature="e#541#542#0" expanded="true" />
-            <element signature="e#596#597#0" expanded="true" />
-            <element signature="e#677#678#0" expanded="true" />
-            <element signature="e#745#746#0" expanded="true" />
-            <element signature="e#1132#1133#0" expanded="true" />
-            <element signature="e#1166#1167#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PaymentService/src/main/resources/application.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="76" lean-forward="true" selection-start-line="2" selection-end-line="2" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -1336,16 +1235,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="9" column="59" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaStockConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="36" column="48" selection-start-line="36" selection-start-column="48" selection-end-line="36" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1386,20 +1275,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/coreapi/StockApi.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/StockApi.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -1562,30 +1437,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="48" column="29" selection-start-line="48" selection-start-column="29" selection-end-line="48" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/axonframework/axon-core/3.4.1/axon-core-3.4.1.jar!/org/axonframework/commandhandling/TargetAggregateIdentifier.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaOrderConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1620,47 +1475,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/saga/OrderSagaTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="383">
-          <caret line="36" column="80" selection-start-line="36" selection-start-column="80" selection-end-line="36" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="51" column="28" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/SagaOrchestratorApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
           <caret line="33" selection-start-line="33" selection-end-line="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/PaymentServiceApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaPaymentConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="40" column="98" selection-start-line="40" selection-start-column="98" selection-end-line="40" selection-end-column="98" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1691,23 +1509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33">
-          <caret line="71" column="91" selection-start-line="71" selection-start-column="91" selection-end-line="71" selection-end-column="91" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/payment/Payment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="67" column="78" selection-start-line="67" selection-start-column="78" selection-end-line="67" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/database/PaymentEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -1719,6 +1520,128 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/payment/Payment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="864">
+          <caret line="67" column="78" selection-start-line="67" selection-start-column="78" selection-end-line="67" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaPaymentConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="419">
+          <caret line="40" column="98" selection-start-line="40" selection-start-column="98" selection-end-line="40" selection-end-column="98" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/paymentamqp/PaymentConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PaymentService/src/main/java/service/PaymentServiceApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="24" column="8" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaOrderConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/stockamqp/StockConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="73" column="93" selection-start-line="73" selection-start-column="93" selection-end-line="73" selection-end-column="93" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/coreapi/StockApi.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/coreapi/StockApi.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="98" selection-start-line="22" selection-start-column="98" selection-end-line="22" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/stock/Stock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="53" column="43" selection-start-line="53" selection-start-column="43" selection-end-line="53" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StockService/src/main/java/service/stock/Stock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="35">
+          <caret line="48" column="43" selection-start-line="48" selection-start-column="43" selection-end-line="48" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/saga/OrderSaga.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1963">
+          <caret line="137" column="35" selection-start-line="137" selection-start-column="35" selection-end-line="137" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/stockamqp/StockTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="40" column="71" selection-start-line="40" selection-start-column="71" selection-end-line="40" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/test/java/service/saga/OrderSagaTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SagaOrchestrator/src/main/java/service/sagaamqp/SagaStockConsumer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

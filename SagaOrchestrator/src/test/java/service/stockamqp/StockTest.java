@@ -22,8 +22,8 @@ public class StockTest {
     @Test
     public void testUpdateStock() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new TriggerStockUpdateCommand("45g4ds3", "shirt", "9876", 2))
-                .expectEvents(new StockUpdateTriggeredEvent("45g4ds3", "shirt", "9876", 2));
+                .when(new TriggerStockUpdateCommand("45g4ds3", "shirt", 2))
+                .expectEvents(new StockUpdateTriggeredEvent("45g4ds3", "shirt", 2));
     }
 
     /*
@@ -38,7 +38,7 @@ public class StockTest {
     @Test
     public void testWrongUpdateStock() throws Exception {
         fixture.givenNoPriorActivity()
-                .when(new TriggerStockUpdateCommand("45g4ds3", "shirt", "9876", 27))
+                .when(new TriggerStockUpdateCommand("45g4ds3", "shirt", 27))
                 .expectNoEvents()
                 .expectException(NotEnoughArticlesInTheStockException.class);
     }

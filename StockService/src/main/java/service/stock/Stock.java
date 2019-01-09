@@ -25,28 +25,28 @@ public class Stock {
 
     @CommandHandler
     public Stock(TriggerStockUpdateCommand command) {
-        apply(new StockUpdateTriggeredEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+        apply(new StockUpdateTriggeredEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(UpdateStockCommand command) {
-        apply(new StockUpdatedEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+        apply(new StockUpdatedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(AbortStockCommand command) {
-        apply(new StockAbortedEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+        apply(new StockAbortedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(TriggerCompensatePaymentCommand command) {
-        apply(new CompensatePaymentTriggeredEvent(command.getArticleId(), command.getArticle(), command.getStockId(), command.getQuantity()));
+        apply(new CompensatePaymentTriggeredEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
     }
 
 
     @EventSourcingHandler
     public void on(StockUpdateTriggeredEvent event) {
-        this.articleId = event.getArticleId();
+        this.articleId = event.getStockId();
         this.stockId = event.getStockId();
         this.article = event.getArticle();
         this.quantity = event.getQuantity();
