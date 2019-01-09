@@ -13,9 +13,9 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 public class Stock {
 
     @AggregateIdentifier
+    private String stockId;
     private String articleId;
     private String article;
-    private String stockId;
     private Integer quantity;
     private Integer available;
 
@@ -25,22 +25,22 @@ public class Stock {
 
     @CommandHandler
     public Stock(TriggerStockUpdateCommand command) {
-        apply(new StockUpdateTriggeredEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockUpdateTriggeredEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(UpdateStockCommand command) {
-        apply(new StockUpdatedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockUpdatedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(AbortStockCommand command) {
-        apply(new StockAbortedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockAbortedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(TriggerCompensatePaymentCommand command) {
-        apply(new CompensatePaymentTriggeredEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new CompensatePaymentTriggeredEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
 

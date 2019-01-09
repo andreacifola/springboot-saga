@@ -10,14 +10,24 @@ public class StockEntity {
     @Id
     private String id;
 
+    private String stockId;
     private String articleId;
     private String article;
     private Integer quantity;
 
-    public StockEntity(String articleId, String article, Integer quantity) {
+    public StockEntity(String stockId, String articleId, String article, Integer quantity) {
+        this.stockId = stockId;
         this.articleId = articleId;
         this.article = article;
         this.quantity = quantity;
+    }
+
+    public String getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
     }
 
     public String getArticleId() {

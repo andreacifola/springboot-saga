@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import service.database.WarehouseEntity;
 import service.database.WarehouseEntityRepository;
 
+import java.util.UUID;
+
 
 @SpringBootApplication
 public class StockServiceApplication {
@@ -20,9 +22,10 @@ public class StockServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(StockServiceApplication.class, args);
 
+        String articleId = UUID.randomUUID().toString();
         warehouseEntityRepository.deleteAll();
 
-        WarehouseEntity wareHouseEntity = new WarehouseEntity("shirt", 23);
+        WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 23);
         warehouseEntityRepository.save(wareHouseEntity);
     }
 }

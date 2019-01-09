@@ -29,13 +29,13 @@ public class SagaStockConsumer {
     @EventHandler
     public void on(StockUpdatedEvent event) {
         commandGateway.send(new EndSagaStockCommand(event.getStockId(),
-                event.getArticle(), event.getQuantity()));
+                event.getArticleId(), event.getArticle(), event.getQuantity()));
     }
 
     @EventHandler
     public void on(StockAbortedEvent event) {
         commandGateway.send(new TriggerCompensatePaymentCommand(event.getStockId(),
-                event.getArticle(), event.getQuantity()));
+                event.getArticleId(), event.getArticle(), event.getQuantity()));
     }
 
     @Bean

@@ -69,7 +69,7 @@ public class PaymentConsumer {
             System.out.println("Alice new money account =       " + user.getMoneyAccount() + "\n");
 
             bankAccountEntityRepository.save(user);
-            paymentEntityRepository.save(new PaymentEntity(paymentId, user.getAccountId(), user.getUser(), event.getAmount()));
+            paymentEntityRepository.save(new PaymentEntity(event.getPaymentId(), user.getAccountId(), user.getUser(), event.getAmount()));
 
             commandBus.dispatch(asCommandMessage(new TriggerPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount())));
             commandGateway.send(new DoPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount()));

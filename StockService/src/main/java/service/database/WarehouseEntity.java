@@ -10,12 +10,22 @@ public class WarehouseEntity {
     @Id
     private String id;
 
+    private String articleId;
     private String article;
     private Integer availability;
 
-    public WarehouseEntity(String article, Integer availability) {
+    public WarehouseEntity(String articleId, String article, Integer availability) {
+        this.articleId = articleId;
         this.article = article;
         this.availability = availability;
+    }
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
     }
 
     public String getArticle() {

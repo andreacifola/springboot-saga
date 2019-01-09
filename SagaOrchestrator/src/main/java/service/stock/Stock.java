@@ -12,9 +12,9 @@ import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 public class Stock {
 
     @AggregateIdentifier
+    private String stockId;
     private String articleId;
     private String article;
-    private String stockId;
     private Integer quantity;
     private Integer available;
 
@@ -24,35 +24,35 @@ public class Stock {
 
     @CommandHandler
     public Stock(TriggerStockUpdateCommand command) {
-        apply(new StockUpdateTriggeredEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockUpdateTriggeredEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(StockUpdateCommand command) {
-        apply(new StockUpdatedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockUpdatedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(AbortStockCommand command) {
-        apply(new StockAbortedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockAbortedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(EndSagaStockCommand command) {
-        apply(new StockSagaEndedEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new StockSagaEndedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
     @CommandHandler
     public void handle(TriggerCompensatePaymentCommand command) {
-        apply(new CompensatePaymentTriggeredEvent(command.getStockId(), command.getArticle(), command.getQuantity()));
+        apply(new CompensatePaymentTriggeredEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
     }
 
 
 
     @EventSourcingHandler
     public void on(StockUpdateTriggeredEvent event) {
-        this.articleId = event.getStockId();
         this.stockId = event.getStockId();
+        this.articleId = event.getArticleId();
         this.article = event.getArticle();
         this.quantity = event.getQuantity();
     }
