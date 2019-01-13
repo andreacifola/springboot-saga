@@ -4,18 +4,13 @@ import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
 import org.junit.Before;
 import org.junit.Test;
-import service.coreapi.OrderCompensateTriggeredEvent;
-import service.coreapi.PaymentTriggeredEvent;
-import service.coreapi.TriggerCompensateOrderCommand;
-import service.coreapi.TriggerPaymentCommand;
-import service.payment.NotEnoughMoneyAccountException;
+import service.coreapi.*;
 import service.payment.Payment;
 
 
 public class PaymentTest {
 
     private FixtureConfiguration<Payment> fixture; //version 3.4.1
-    private Payment payment = new Payment();
 
     @Before
     public void setUp() throws Exception {
@@ -23,44 +18,58 @@ public class PaymentTest {
     }
 
     @Test
-    public void testDoPayment() throws Exception {
+    public void testTriggerPayment() throws Exception {
         fixture.givenNoPriorActivity()
                 .when(new TriggerPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
                 .expectEvents(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"));
     }
 
-    /*
     @Test
-    public void testMoneyWithdrawn() throws Exception {
-        BankAccountEntity alice = new BankAccountEntity("asdf35g55", "Alice", "350$");
-        String newMoneyAccount = payment.on(new PaymentTriggeredEvent("1sd3gg54", "Alice", "5555", "30$"));
-        alice.setMoneyAccount(newMoneyAccount);
-        assertEquals("The money are withdrawn correctly!", "320$", alice.getMoneyAccount());
-    }
-    */
-
-    @Test
-    public void testWrongPayment() throws Exception {
-        fixture.givenNoPriorActivity()
-                .when(new TriggerPaymentCommand("1sd3gg54", "5555", "Alice", "630$"))
-                .expectNoEvents()
-                .expectException(NotEnoughMoneyAccountException.class);
+    public void testEnableStockUpdate() throws Exception {
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new EnableStockUpdateCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new StockUpdateEnabledEvent("1sd3gg54", "5555", "Alice", "30$"));
     }
 
     @Test
-    public void testRefundPayment() throws Exception {
+    public void testDoPayment() throws Exception {
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new DoPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new PaymentDoneEvent("1sd3gg54", "5555", "Alice", "30$"));
+    }
+
+    @Test
+    public void testCompensateOrder() throws Exception {
         fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
                 .when(new TriggerCompensateOrderCommand("1sd3gg54", "5555", "Alice", "30$"))
                 .expectEvents(new OrderCompensateTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"));
     }
 
-    /*
     @Test
-    public void testMoneyRefunded() throws Exception {
-        BankAccountEntity alice = new BankAccountEntity("asdf35g55", "Alice", "350$");
-        String newMoneyAccount = payment.on(new OrderCompensateTriggeredEvent("1sd3gg54",  "Alice", "5555", "30$"));
-        alice.setMoneyAccount(newMoneyAccount);
-        assertEquals("The money are withdrawn correctly!", "380$", alice.getMoneyAccount());
+    public void testAbortPayment() throws Exception {
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new AbortPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new PaymentAbortedEvent("1sd3gg54", "5555", "Alice", "30$"));
     }
-    */
+
+    @Test
+    public void testTriggerEndSagaPayment() throws Exception {
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new TriggerEndSagaPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new EndSagaPaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"));
+    }
+
+    @Test
+    public void testRefundPayment() throws Exception {
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new RefundPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new PaymentRefundedEvent("1sd3gg54", "5555", "Alice", "30$"));
+    }
+
+    @Test
+    public void testEndSagaPayment() throws Exception {
+        fixture.given(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
+                .when(new EndSagaPaymentCommand("1sd3gg54", "5555", "Alice", "30$"))
+                .expectEvents(new SagaPaymentEndedEvent("1sd3gg54", "5555", "Alice", "30$"));
+    }
 }

@@ -3,15 +3,12 @@ package service.stockamqp;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;
-import service.coreapi.StockUpdateTriggeredEvent;
-import service.coreapi.TriggerStockUpdateCommand;
-import service.stock.NotEnoughArticlesInTheStockException;
+import service.coreapi.*;
 import service.stock.Stock;
 
 
 public class StockTest {
 
-    private Stock stock = new Stock();
     private AggregateTestFixture<Stock> fixture;
 
     @Before
@@ -20,34 +17,37 @@ public class StockTest {
     }
 
     @Test
-    public void testUpdateStock() throws Exception {
+    public void testTriggerStockUpdate() throws Exception {
         fixture.givenNoPriorActivity()
                 .when(new TriggerStockUpdateCommand("45g4ds3", "9876", "shirt", 2))
                 .expectEvents(new StockUpdateTriggeredEvent("45g4ds3", "9876", "shirt", 2));
     }
 
-    /*
     @Test
-    public void testStockUpdated() throws Exception {
-        WareHouseEntity wareHouseEntity = new WareHouseEntity("shirt", 23);
-        Integer available = stock.on(new StockUpdateTriggeredEvent("45g4ds3", "shirt", "9876", 2));
-        assertEquals("The available articles are the same", available.longValue(), 21L);
-    }
-    */
-
-    @Test
-    public void testWrongUpdateStock() throws Exception {
-        fixture.givenNoPriorActivity()
-                .when(new TriggerStockUpdateCommand("45g4ds3", "9876", "shirt", 2))
-                .expectNoEvents()
-                .expectException(NotEnoughArticlesInTheStockException.class);
+    public void testStockUpdate() throws Exception {
+        fixture.given(new StockUpdateTriggeredEvent("45g4ds3", "9876", "shirt", 2))
+                .when(new StockUpdateCommand("45g4ds3", "9876", "shirt", 2, 23))
+                .expectEvents(new StockUpdatedEvent("45g4ds3", "9876", "shirt", 2, 23));
     }
 
-    /*@Test
-    public void testStockUpdateTwice() throws Exception {
-        fixture.given(new StockUpdateTriggeredEvent("shirt", 22))
-                .when(new TriggerStockUpdateCommand("shirt", 5))
-                .expectNoEvents()
-                .expectException(NotEnoughArticlesInTheStockException.class);
-    }*/
+    @Test
+    public void testAbortStock() throws Exception {
+        fixture.given(new StockUpdateTriggeredEvent("45g4ds3", "9876", "shirt", 2))
+                .when(new AbortStockCommand("45g4ds3", "9876", "shirt", 2))
+                .expectEvents(new StockAbortedEvent("45g4ds3", "9876", "shirt", 2));
+    }
+
+    @Test
+    public void testEndSagaStock() throws Exception {
+        fixture.given(new StockUpdateTriggeredEvent("45g4ds3", "9876", "shirt", 2))
+                .when(new EndSagaStockCommand("45g4ds3", "9876", "shirt", 2))
+                .expectEvents(new StockSagaEndedEvent("45g4ds3", "9876", "shirt", 2));
+    }
+
+    @Test
+    public void testTriggerCompensatePayment() throws Exception {
+        fixture.given(new StockUpdateTriggeredEvent("45g4ds3", "9876", "shirt", 2))
+                .when(new TriggerCompensatePaymentCommand("45g4ds3", "9876", "shirt", 2))
+                .expectEvents(new CompensatePaymentTriggeredEvent("45g4ds3", "9876", "shirt", 2));
+    }
 }

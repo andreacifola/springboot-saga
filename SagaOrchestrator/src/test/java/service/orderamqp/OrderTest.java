@@ -3,10 +3,7 @@ package service.orderamqp;
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.junit.Before;
 import org.junit.Test;
-import service.coreapi.DeleteOrderCommand;
-import service.coreapi.OrderDeletedEvent;
-import service.coreapi.SagaStartedEvent;
-import service.coreapi.StartSagaCommand;
+import service.coreapi.*;
 import service.entities.OrderEntity;
 import service.order.Order;
 
@@ -26,7 +23,7 @@ public class OrderTest {
     }
 
     @Test
-    public void testCreateOrder() throws Exception {
+    public void testStartSaga() throws Exception {
         fixture.givenNoPriorActivity()
                 .when(new StartSagaCommand("1234", "Alice", "shirt", 2, "30$"))
                 .expectEvents(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"));
@@ -49,6 +46,13 @@ public class OrderTest {
         fixture.given(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
                 .when(new DeleteOrderCommand("1234", "Alice", "shirt", 2, "30$"))
                 .expectEvents(new OrderDeletedEvent("1234", "Alice", "shirt", 2, "30$"));
+    }
+
+    @Test
+    public void testEndSaga() throws Exception {
+        fixture.given(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
+                .when(new EndSagaOrderCommand("1234", "Alice", "shirt", 2, "30$"))
+                .expectEvents(new SagaOrderEndedEvent("1234", "Alice", "shirt", 2, "30$"));
     }
 
     @Test
