@@ -11,10 +11,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.EndSagaStockCommand;
-import service.coreapi.StockAbortedEvent;
-import service.coreapi.StockUpdatedEvent;
-import service.coreapi.TriggerCompensatePaymentCommand;
+import service.coreapi.*;
 
 @ProcessingGroup("sagaStockEvents")
 @RestController
@@ -29,6 +26,9 @@ public class SagaStockConsumer {
     @EventHandler
     public void on(StockUpdatedEvent event) {
         commandGateway.send(new EndSagaStockCommand(event.getStockId(),
+                event.getArticleId(), event.getArticle(), event.getQuantity()));
+
+        commandGateway.send(new QueryHandlerSaveStockCommand(event.getStockId(),
                 event.getArticleId(), event.getArticle(), event.getQuantity()));
     }
 

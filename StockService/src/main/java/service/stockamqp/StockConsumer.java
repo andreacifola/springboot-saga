@@ -32,21 +32,19 @@ public class StockConsumer {
     private final transient CommandGateway commandGateway;
     private final transient CommandBus commandBus;
 
-    @Autowired
-    private WarehouseEntityRepository warehouseEntityRepository;
-    @Autowired
-    private StockEntityRepository stockEntityRepository;
+    private final WarehouseEntityRepository warehouseEntityRepository;
+    private final StockEntityRepository stockEntityRepository;
 
-    public StockConsumer(CommandGateway commandGateway, CommandBus commandBus) {
+    @Autowired
+    public StockConsumer(CommandGateway commandGateway, CommandBus commandBus, StockEntityRepository stockEntityRepository, WarehouseEntityRepository warehouseEntityRepository) {
         this.commandGateway = commandGateway;
         this.commandBus = commandBus;
+        this.stockEntityRepository = stockEntityRepository;
+        this.warehouseEntityRepository = warehouseEntityRepository;
     }
 
     @EventHandler
     public void on(StockUpdateTriggeredEvent event) {
-
-        //TODO eliminare quando è finito
-        stockEntityRepository.deleteAll();
 
         WarehouseEntity warehouseEntity = warehouseEntityRepository.findByArticle("shirt");
 

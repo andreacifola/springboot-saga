@@ -37,7 +37,6 @@ public class OrderSaga {
 
     /**
      * This is the first event of the Saga, triggered when a new order is executed.
-     *
      * @param event
      */
     @StartSaga
@@ -110,7 +109,6 @@ public class OrderSaga {
 
     /**
      * This method will anyway end the Saga, but when something went wrong.
-     *
      * @param event
      */
     @EndSaga

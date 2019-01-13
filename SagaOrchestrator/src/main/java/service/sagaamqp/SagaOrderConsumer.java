@@ -31,6 +31,7 @@ public class SagaOrderConsumer {
 
         commandGateway.send(new QueryHandlerSaveOrderCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
+
     }
 
     @EventHandler

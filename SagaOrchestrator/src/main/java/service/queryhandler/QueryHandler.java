@@ -1,14 +1,21 @@
 package service.queryhandler;
 
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import service.coreapi.*;
+import service.coreapi.QueryHandlerOrderSavedEvent;
+import service.coreapi.QueryHandlerSaveOrderCommand;
+import service.coreapi.QueryHandlerSaveStockCommand;
+import service.coreapi.QueryHandlerStockSavedEvent;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 @Aggregate
 public class QueryHandler {
+
+    @AggregateIdentifier
+    private String orderId;
 
     public QueryHandler() {
     }
@@ -20,26 +27,16 @@ public class QueryHandler {
     }
 
     @CommandHandler
-    public void handle(QueryHandlerSavePaymentCommand command) {
-        apply(new QueryHandlerPaymentSavedEvent(command.getAccountId(),
-                command.getUser(), command.getPaymentId(), command.getAmount()));
-    }
-
-    @CommandHandler
     public void handle(QueryHandlerSaveStockCommand command) {
         apply(new QueryHandlerStockSavedEvent(command.getArticleId(),
                 command.getArticle(), command.getStockId(), command.getQuantity()));
     }
 
 
+
     @EventSourcingHandler
     public void on(QueryHandlerOrderSavedEvent event) {
-
-    }
-
-    @EventSourcingHandler
-    public void on(QueryHandlerPaymentSavedEvent event) {
-
+        this.orderId = event.getOrderId();
     }
 
     @EventSourcingHandler

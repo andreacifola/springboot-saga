@@ -3,6 +3,7 @@ package service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import service.database.StockEntityRepository;
 import service.database.WarehouseEntity;
 import service.database.WarehouseEntityRepository;
 
@@ -13,10 +14,12 @@ import java.util.UUID;
 public class StockServiceApplication {
 
     private static WarehouseEntityRepository warehouseEntityRepository;
+    private static StockEntityRepository stockEntityRepository;
 
     @Autowired
-    public StockServiceApplication(WarehouseEntityRepository warehouseEntityRepository) {
+    public StockServiceApplication(WarehouseEntityRepository warehouseEntityRepository, StockEntityRepository stockEntityRepository) {
         StockServiceApplication.warehouseEntityRepository = warehouseEntityRepository;
+        StockServiceApplication.stockEntityRepository = stockEntityRepository;
     }
 
     public static void main(String[] args) {
@@ -24,6 +27,9 @@ public class StockServiceApplication {
 
         String articleId = UUID.randomUUID().toString();
         warehouseEntityRepository.deleteAll();
+
+        //TODO eliminare quando è finito
+        stockEntityRepository.deleteAll();
 
         WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 23);
         warehouseEntityRepository.save(wareHouseEntity);

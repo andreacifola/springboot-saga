@@ -27,6 +27,18 @@ public class Order {
                 command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
+    @EventSourcingHandler
+    public OrderEntity on(OrderCreatedEvent event) {
+        this.orderId = event.getOrderId();
+        order.setOrderId(orderId);
+        order.setUser(event.getUser());
+        order.setArticle(event.getArticle());
+        order.setQuantity(event.getQuantity());
+        order.setPrice(event.getPrice());
+
+        return order;
+    }
+
     @CommandHandler
     public void handle(DeleteOrderCommand command) {
         apply(new OrderDeletedEvent(command.getOrderId(), command.getUser(),
@@ -41,18 +53,7 @@ public class Order {
 
 
 
-    @EventSourcingHandler
-    public OrderEntity on(OrderCreatedEvent event) {
-        this.orderId = event.getOrderId();
-        order.setOrderId(orderId);
-        order.setUser(event.getUser());
-        order.setArticle(event.getArticle());
-        order.setQuantity(event.getQuantity());
-        order.setPrice(event.getPrice());
-        System.out.println("GOT CreateOrderCommand");
 
-        return order;
-    }
 
     @EventSourcingHandler
     public OrderEntity on(OrderDeletedEvent event) {

@@ -11,10 +11,12 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
-import service.coreapi.SagaStartedEvent;
-import service.coreapi.StockUpdateTriggeredEvent;
+import service.coreapi.QueryHandlerOrderSavedEvent;
+import service.coreapi.QueryHandlerStockSavedEvent;
 import service.database.GlobalInformation;
 import service.database.GlobalInformationRepository;
+
+//import service.coreapi.StockUpdateTriggeredEvent;
 
 @ProcessingGroup("queryHandlerEvents")
 @RestController
@@ -27,10 +29,8 @@ public class QueryHandlerConsumer {
 
     private String orderId;
 
-
     @EventHandler
-    public void on(SagaStartedEvent event) {
-
+    public void on(QueryHandlerOrderSavedEvent event) {
         //TODO rimuovere alla fine
         repository.deleteAll();
 
@@ -42,8 +42,7 @@ public class QueryHandlerConsumer {
     }
 
     @EventHandler
-    public void on(StockUpdateTriggeredEvent event) {
-
+    public void on(QueryHandlerStockSavedEvent event) {
         GlobalInformation info = repository.findByOrderId(orderId);
         //TODO passare l'availability dallo stockService
         info.setAvailability(event.getQuantity());

@@ -19,8 +19,6 @@ import service.database.BankAccountEntityRepository;
 import service.database.PaymentEntity;
 import service.database.PaymentEntityRepository;
 
-import java.util.UUID;
-
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 
@@ -31,25 +29,20 @@ public class PaymentConsumer {
     private final CommandGateway commandGateway;
     private final CommandBus commandBus;
 
-    @Autowired
-    private BankAccountEntityRepository bankAccountEntityRepository;
-    @Autowired
-    private PaymentEntityRepository paymentEntityRepository;
+    private final BankAccountEntityRepository bankAccountEntityRepository;
+    private final PaymentEntityRepository paymentEntityRepository;
 
-    private String paymentId = UUID.randomUUID().toString();
 
-    public PaymentConsumer(CommandGateway commandGateway, CommandBus commandBus) {
+    @Autowired
+    public PaymentConsumer(CommandGateway commandGateway, CommandBus commandBus, BankAccountEntityRepository bankAccountEntityRepository, PaymentEntityRepository paymentEntityRepository) {
         this.commandGateway = commandGateway;
         this.commandBus = commandBus;
+        this.bankAccountEntityRepository = bankAccountEntityRepository;
+        this.paymentEntityRepository = paymentEntityRepository;
     }
 
     @EventHandler
     public void on(PaymentTriggeredEvent event) {
-        //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
-        paymentId = UUID.randomUUID().toString();
-
-        //TODO eliminare quando è finito
-        paymentEntityRepository.deleteAll();
 
         BankAccountEntity user = bankAccountEntityRepository.findByUser(event.getUser());
 
@@ -82,8 +75,6 @@ public class PaymentConsumer {
 
     @EventHandler
     public void on(PaymentRefundedEvent event) {
-        //todo migliorare questa cosa, mettendo un paymentId al posto dell'accountId come aggregateidentifier altrimenti va in loop mongodb
-        paymentId = UUID.randomUUID().toString();
 
         BankAccountEntity user = bankAccountEntityRepository.findByUser(event.getUser());
 
@@ -99,8 +90,7 @@ public class PaymentConsumer {
         System.out.println("Alice new money account =  " + user.getMoneyAccount() + "\n");
 
         bankAccountEntityRepository.save(user);
-        //TODO controllare dopo aver aggiustato la cosa del paymentId
-        PaymentEntity paymentEntity = paymentEntityRepository.findByPaymentId(event.getPaymentId());
+        PaymentEntity paymentEntity = paymentEntityRepository.findByUser(event.getUser());
         paymentEntityRepository.delete(paymentEntity);
 
         commandGateway.send(new TriggerEndSagaPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount()));

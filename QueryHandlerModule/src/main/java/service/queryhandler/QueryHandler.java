@@ -1,49 +1,47 @@
 package service.queryhandler;
 
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.commandhandling.model.AggregateIdentifier;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.spring.stereotype.Aggregate;
-import service.coreapi.*;
+import service.coreapi.QueryHandlerOrderSavedEvent;
+import service.coreapi.QueryHandlerSaveOrderCommand;
+import service.coreapi.QueryHandlerSaveStockCommand;
+import service.coreapi.QueryHandlerStockSavedEvent;
 
 import static org.axonframework.commandhandling.model.AggregateLifecycle.apply;
 
 @Aggregate
 public class QueryHandler {
 
+    @AggregateIdentifier
+    private String orderId;
+
     public QueryHandler() {
     }
 
     @CommandHandler
-    public QueryHandler(StartSagaCommand command) {
-        apply(new SagaStartedEvent(command.getOrderId(),
+    public QueryHandler(QueryHandlerSaveOrderCommand command) {
+        apply(new QueryHandlerOrderSavedEvent(command.getOrderId(),
                 command.getUser(), command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
     @CommandHandler
-    public void handle(TriggerPaymentCommand command) {
-        apply(new PaymentTriggeredEvent(command.getAccountId(),
-                command.getUser(), command.getPaymentId(), command.getAmount()));
-    }
-
-    @CommandHandler
-    public void handle(TriggerStockUpdateCommand command) {
-        apply(new StockUpdateTriggeredEvent(command.getArticleId(),
+    public void handle(QueryHandlerSaveStockCommand command) {
+        apply(new QueryHandlerStockSavedEvent(command.getArticleId(),
                 command.getArticle(), command.getStockId(), command.getQuantity()));
     }
 
 
     @EventSourcingHandler
-    public void on(SagaStartedEvent event) {
+    public void on(QueryHandlerOrderSavedEvent event) {
+        this.orderId = event.getOrderId();
 
     }
 
     @EventSourcingHandler
-    public void on(PaymentTriggeredEvent event) {
+    public void on(QueryHandlerStockSavedEvent event) {
 
     }
 
-    @EventSourcingHandler
-    public void on(StockUpdateTriggeredEvent event) {
-
-    }
 }

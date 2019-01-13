@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import service.database.BankAccountEntity;
 import service.database.BankAccountEntityRepository;
+import service.database.PaymentEntityRepository;
 
 import java.util.UUID;
 
@@ -13,10 +14,12 @@ import java.util.UUID;
 public class PaymentServiceApplication {
 
     private static BankAccountEntityRepository bankAccountEntityRepository;
+    private static PaymentEntityRepository paymentEntityRepository;
 
     @Autowired
-    public PaymentServiceApplication(BankAccountEntityRepository bankAccountEntityRepository) {
+    public PaymentServiceApplication(BankAccountEntityRepository bankAccountEntityRepository, PaymentEntityRepository paymentEntityRepository) {
         PaymentServiceApplication.bankAccountEntityRepository = bankAccountEntityRepository;
+        PaymentServiceApplication.paymentEntityRepository = paymentEntityRepository;
     }
 
     public static void main(String[] args) {
@@ -24,6 +27,9 @@ public class PaymentServiceApplication {
 
         String accountId = UUID.randomUUID().toString();
         bankAccountEntityRepository.deleteAll();
+
+        //TODO eliminare quando è finito
+        paymentEntityRepository.deleteAll();
 
         BankAccountEntity alice = new BankAccountEntity(accountId, "Alice", "350$");
         bankAccountEntityRepository.save(alice);

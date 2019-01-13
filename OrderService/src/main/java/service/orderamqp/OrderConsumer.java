@@ -37,9 +37,6 @@ public class OrderConsumer {
     @EventHandler
     public OrderEntity on(SagaStartedEvent event) {
 
-        //TODO rimuovere alla fine
-        repository.deleteAll();
-
         order.setOrderId(event.getOrderId());
         order.setUser(event.getUser());
         order.setArticle(event.getArticle());
