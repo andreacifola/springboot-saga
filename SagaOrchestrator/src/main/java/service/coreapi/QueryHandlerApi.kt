@@ -12,4 +12,8 @@ class QueryHandlerSaveStockCommand(@TargetAggregateIdentifier val stockId: Strin
 
 class QueryHandlerStockSavedEvent(val stockId: String, val articleId: String, val article: String, val quantity: Int, val availability: Int)
 
-//TODO aggiungere comandi ed eventi per le cancellazioni dopo le azioni compensative
+class QueryHandlerAbortPaymentCommand(@TargetAggregateIdentifier val orderId: String)
+class QueryHandlerPaymentAbortedEvent(@TargetAggregateIdentifier val orderId: String)
+
+class QueryHandlerAbortStockCommand(@TargetAggregateIdentifier val orderId: String)
+class QueryHandlerStockAbortedEvent(@TargetAggregateIdentifier val orderId: String)

@@ -36,6 +36,10 @@ public class SagaStockConsumer {
     public void on(StockAbortedEvent event) {
         commandGateway.send(new TriggerCompensatePaymentCommand(event.getStockId(),
                 event.getArticleId(), event.getArticle(), event.getQuantity()));
+
+        SagaOrderConsumer sagaOrderConsumer = new SagaOrderConsumer(commandGateway);
+        String orderId = sagaOrderConsumer.getOrderId();
+        commandGateway.send(new QueryHandlerAbortStockCommand(orderId));
     }
 
     @Bean

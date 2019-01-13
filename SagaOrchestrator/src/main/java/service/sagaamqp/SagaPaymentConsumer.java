@@ -31,8 +31,11 @@ public class SagaPaymentConsumer {
 
     @EventHandler
     public void on(PaymentAbortedEvent event) {
-
         commandGateway.send(new TriggerCompensateOrderCommand(event.getPaymentId(), event.getAccountId(), event.getUser(), event.getAmount()));
+
+        SagaOrderConsumer sagaOrderConsumer = new SagaOrderConsumer(commandGateway);
+        String orderId = sagaOrderConsumer.getOrderId();
+        commandGateway.send(new QueryHandlerAbortPaymentCommand(orderId));
     }
 
     @EventHandler
