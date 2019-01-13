@@ -29,8 +29,8 @@ public class Stock {
     }
 
     @CommandHandler
-    public void handle(UpdateStockCommand command) {
-        apply(new StockUpdatedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
+    public void handle(StockUpdateCommand command) {
+        apply(new StockUpdatedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity(), command.getAvailability()));
     }
 
     @CommandHandler

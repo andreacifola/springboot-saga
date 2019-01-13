@@ -29,7 +29,7 @@ public class Stock {
 
     @CommandHandler
     public void handle(StockUpdateCommand command) {
-        apply(new StockUpdatedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));
+        apply(new StockUpdatedEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity(), command.getAvailability()));
     }
 
     @CommandHandler
@@ -50,8 +50,8 @@ public class Stock {
 
     @CommandHandler
     public void handle(QueryHandlerSaveStockCommand command) {
-        apply(new QueryHandlerStockSavedEvent(command.getArticleId(),
-                command.getArticle(), command.getStockId(), command.getQuantity()));
+        apply(new QueryHandlerStockSavedEvent(command.getArticleId(), command.getArticle(),
+                command.getStockId(), command.getQuantity(), command.getAvailability()));
     }
 
     @EventSourcingHandler

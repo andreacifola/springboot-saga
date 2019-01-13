@@ -28,8 +28,8 @@ public class QueryHandler {
 
     @CommandHandler
     public void handle(QueryHandlerSaveStockCommand command) {
-        apply(new QueryHandlerStockSavedEvent(command.getArticleId(),
-                command.getArticle(), command.getStockId(), command.getQuantity()));
+        apply(new QueryHandlerStockSavedEvent(command.getArticleId(), command.getArticle(),
+                command.getStockId(), command.getQuantity(), command.getAvailability()));
     }
 
 

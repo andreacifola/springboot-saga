@@ -28,6 +28,9 @@ public class QueryHandlerConsumer {
     private GlobalInformationRepository repository;
 
     private String orderId;
+    private String user;
+    private String article;
+    private String price;
 
     @EventHandler
     public void on(QueryHandlerOrderSavedEvent event) {
@@ -35,6 +38,9 @@ public class QueryHandlerConsumer {
         repository.deleteAll();
 
         this.orderId = event.getOrderId();
+        this.user = event.getUser();
+        this.article = event.getArticle();
+        this.price = event.getPrice();
         GlobalInformation info = new GlobalInformation(event.getOrderId(), event.getUser(), event.getArticle(), event.getQuantity(), null, event.getPrice());
         repository.save(info);
 
@@ -45,10 +51,15 @@ public class QueryHandlerConsumer {
     public void on(QueryHandlerStockSavedEvent event) {
         GlobalInformation info = repository.findByOrderId(orderId);
         //TODO passare l'availability dallo stockService
-        info.setAvailability(event.getQuantity());
+        info.setAvailability(event.getAvailability());
         repository.save(info);
 
         System.out.println(info);
+
+        System.out.println("<< Hi " + user + ",\n   You have spent " + price + " to buy " +
+                event.getQuantity() + " " + article + "s out of " + event.getAvailability() +
+                " available in the warehouse.\n   So now we" + " have " +
+                (event.getAvailability() - event.getQuantity()) + " " + article + " in the warehouse. >>\n");
     }
 
     @Bean

@@ -29,7 +29,7 @@ public class SagaStockConsumer {
                 event.getArticleId(), event.getArticle(), event.getQuantity()));
 
         commandGateway.send(new QueryHandlerSaveStockCommand(event.getStockId(),
-                event.getArticleId(), event.getArticle(), event.getQuantity()));
+                event.getArticleId(), event.getArticle(), event.getQuantity(), event.getAvailability()));
     }
 
     @EventHandler

@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import service.coreapi.AbortStockCommand;
+import service.coreapi.StockUpdateCommand;
 import service.coreapi.StockUpdateTriggeredEvent;
 import service.coreapi.TriggerStockUpdateCommand;
-import service.coreapi.UpdateStockCommand;
 import service.database.StockEntity;
 import service.database.StockEntityRepository;
 import service.database.WarehouseEntity;
@@ -57,6 +57,8 @@ public class StockConsumer {
             System.out.println("Number of " + event.getArticle() +
                     "s ordered =                   " + event.getQuantity());
 
+            Integer oldAvailability = warehouseEntity.getAvailability();
+
             warehouseEntity.setAvailability(warehouseEntity.getAvailability() - event.getQuantity());
 
             System.out.println("New number of " + event.getArticle() +
@@ -66,7 +68,7 @@ public class StockConsumer {
             stockEntityRepository.save(new StockEntity(event.getStockId(), warehouseEntity.getArticleId(), event.getArticle(), event.getQuantity()));
 
             commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(event.getStockId(), event.getArticleId(), event.getArticle(), event.getQuantity())));
-            commandGateway.send(new UpdateStockCommand(event.getStockId(), event.getArticleId(), event.getArticle(), event.getQuantity()));
+            commandGateway.send(new StockUpdateCommand(event.getStockId(), event.getArticleId(), event.getArticle(), event.getQuantity(), oldAvailability));
         } else {
             System.out.println("\nYou don't have enough article in the warehouse!\n");
             commandBus.dispatch(asCommandMessage(new TriggerStockUpdateCommand(event.getStockId(), event.getArticleId(), event.getArticle(), event.getQuantity())));
