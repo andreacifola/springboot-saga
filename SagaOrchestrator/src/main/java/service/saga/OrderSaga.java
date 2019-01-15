@@ -87,6 +87,7 @@ public class OrderSaga {
         System.out.println("\n" + repeat("-", 65) + " Compensate the Order " + repeat("-", 65));
 
         commandGateway.send(new DeleteOrderCommand(orderId, user, article, quantity, price));
+        System.out.println("\nOrder " + orderId + " deleted.\n");
         System.out.println(repeat("-", 67) + " Order Compensated " + repeat("-", 67));
         SagaOrchestratorApplication.logger.info("Order Compensated " + SagaOrchestratorApplication.sagaId + "\n");
     }
@@ -98,10 +99,14 @@ public class OrderSaga {
         System.out.println("\n" + repeat("-", 57) + " Compensate the Payment and the Order " + repeat("-", 57));
 
         commandGateway.send(new RefundPaymentCommand(paymentId, accountId, user, amount));
+        System.out.println("\nPayment Id =      " + paymentId);
+        System.out.println("Username =        " + user);
+        System.out.println("Money refunded =  " + price + "\n");
         System.out.println(repeat("-", 66) + " Payment Compensated " + repeat("-", 66));
         SagaOrchestratorApplication.logger.info("Payment Compensated " + SagaOrchestratorApplication.sagaId + "\n");
 
         commandGateway.send(new DeleteOrderCommand(orderId, user, article, quantity, price));
+        System.out.println("\nOrder " + orderId + " deleted.\n");
         System.out.println(repeat("-", 67) + " Order Compensated " + repeat("-", 67));
         SagaOrchestratorApplication.logger.info("Order Compensated " + SagaOrchestratorApplication.sagaId + "\n");
     }

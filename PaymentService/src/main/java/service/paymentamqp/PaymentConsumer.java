@@ -32,7 +32,6 @@ public class PaymentConsumer {
     private final BankAccountEntityRepository bankAccountEntityRepository;
     private final PaymentEntityRepository paymentEntityRepository;
 
-
     @Autowired
     public PaymentConsumer(CommandGateway commandGateway, CommandBus commandBus, BankAccountEntityRepository bankAccountEntityRepository, PaymentEntityRepository paymentEntityRepository) {
         this.commandGateway = commandGateway;
@@ -59,7 +58,7 @@ public class PaymentConsumer {
 
             moneyAccount -= price;
             user.setMoneyAccount(moneyAccount.toString() + "$");
-            System.out.println("Alice new money account =       " + user.getMoneyAccount() + "\n");
+            System.out.println(user.getUser() + " new money account =       " + user.getMoneyAccount() + "\n");
 
             bankAccountEntityRepository.save(user);
             paymentEntityRepository.save(new PaymentEntity(event.getPaymentId(), user.getAccountId(), user.getUser(), event.getAmount()));
@@ -81,13 +80,13 @@ public class PaymentConsumer {
         Integer moneyAccount = Integer.valueOf(user.getMoneyAccount().substring(0, user.getMoneyAccount().length() - 1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length()-1));
 
-        System.out.println("\nAlice money account =      " + user.getMoneyAccount());
+        System.out.println("\n" + user.getUser() + " money account =      " + user.getMoneyAccount());
         System.out.println("Amount to refund =         " + event.getAmount());
 
         moneyAccount += price;
         user.setMoneyAccount(moneyAccount.toString() + "$");
 
-        System.out.println("Alice new money account =  " + user.getMoneyAccount() + "\n");
+        System.out.println(user.getUser() + "new money account =  " + user.getMoneyAccount() + "\n");
 
         bankAccountEntityRepository.save(user);
         PaymentEntity paymentEntity = paymentEntityRepository.findByUser(event.getUser());

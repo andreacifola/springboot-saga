@@ -11,7 +11,10 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
+import service.SagaOrchestratorApplication;
 import service.coreapi.*;
+
+import java.util.UUID;
 
 
 @ProcessingGroup("sagaOrderEvents")
@@ -30,6 +33,15 @@ public class SagaOrderConsumer {
 
         orderID = event.getOrderId();
 
+        SagaOrchestratorApplication.sagaId = UUID.randomUUID().toString();
+        System.out.println("\n--------------------------------------------------- Start Saga " +
+                SagaOrchestratorApplication.sagaId + " ----------------------------------------------------");
+        SagaOrchestratorApplication.logger.info("Start Saga " + SagaOrchestratorApplication.sagaId + "\n");
+        System.out.println("\n-------------------------------------------------- Create Order " +
+                SagaOrchestratorApplication.sagaId + " ---------------------------------------------------");
+        SagaOrchestratorApplication.logger.info("Create Order " + SagaOrchestratorApplication.sagaId + "\n");
+        printOrderElements(event);
+
         commandGateway.send(new StartSagaCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
 
@@ -40,9 +52,16 @@ public class SagaOrderConsumer {
 
     @EventHandler
     public void on(EndSagaOrderTriggeredEvent event) {
-
         commandGateway.send(new EndSagaOrderCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
+    }
+
+    private void printOrderElements(OrderCreatedEvent event) {
+        System.out.println("\nOrder Id =  " + event.getOrderId());
+        System.out.println("User =      " + event.getUser());
+        System.out.println("Article =   " + event.getArticle());
+        System.out.println("Quantity =  " + event.getQuantity());
+        System.out.println("Price =     " + event.getPrice() + "\n");
     }
 
     @Bean

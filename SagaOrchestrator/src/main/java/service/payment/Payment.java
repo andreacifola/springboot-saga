@@ -104,9 +104,6 @@ public class Payment {
 
     @EventSourcingHandler
     public void on(PaymentRefundedEvent event) {
-        System.out.println("\nPayment Id =      " + event.getPaymentId());
-        System.out.println("Username =        " + event.getUser());
-        System.out.println("Money refunded =  " + event.getAmount() + "\n");
 
     }
 
