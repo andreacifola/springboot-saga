@@ -26,12 +26,17 @@ public class StockServiceApplication {
         SpringApplication.run(StockServiceApplication.class, args);
 
         String articleId = UUID.randomUUID().toString();
-        warehouseEntityRepository.deleteAll();
+        //warehouseEntityRepository.deleteAll();
+        WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 23);
+        if (warehouseEntityRepository.findByArticle("shirt") == null) {
+            warehouseEntityRepository.save(wareHouseEntity);
+        } else {
+            warehouseEntityRepository.deleteByArticle("shirt");
+            warehouseEntityRepository.save(wareHouseEntity);
+        }
 
         //TODO eliminare quando è finito
         stockEntityRepository.deleteAll();
 
-        WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 0);
-        warehouseEntityRepository.save(wareHouseEntity);
     }
 }

@@ -43,7 +43,8 @@ public class OrderSaga {
     @SagaEventHandler(associationProperty = "orderId")
     public void on(SagaStartedEvent event) {
 
-        System.out.println(repeat("-", 50) + " Order Created " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 50));
+        System.out.println(repeat("-", 50) + " Order Created " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 50));
         SagaOrchestratorApplication.logger.info("Order Created " + SagaOrchestratorApplication.sagaId + "\n");
 
         // Saga allows us to save the state and to pass this state from a service to another
@@ -59,7 +60,8 @@ public class OrderSaga {
         stockId = UUID.randomUUID().toString();
         associateWith("stockId", stockId);
 
-        System.out.println("\n" + repeat("-", 49) + " Execute Payment " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 49));
+        System.out.println("\n" + repeat("-", 49) + " Execute Payment " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 49));
         SagaOrchestratorApplication.logger.info("Execute Payment " + SagaOrchestratorApplication.sagaId + "\n");
         commandGateway.send(new TriggerPaymentCommand(paymentId, "", event.getUser(), event.getPrice()));
     }
@@ -72,37 +74,46 @@ public class OrderSaga {
         System.out.println("Username =" + repeat(" ", 37) + event.getUser());
         System.out.println("Money subtracted due to the ordered article =  " + event.getAmount());
 
-        System.out.println("\n" + repeat("-", 49) + " Payment Executed " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 49));
-        SagaOrchestratorApplication.logger.info("Payment Executed " + SagaOrchestratorApplication.sagaId + "\n");
+        System.out.println("\n" + repeat("-", 49) + " Payment Executed " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 49));
+        SagaOrchestratorApplication.logger.info("Payment Executed " +
+                SagaOrchestratorApplication.sagaId + "\n");
 
-        System.out.println("\n" + repeat("-", 51) + " Update Stock " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 51));
+        System.out.println("\n" + repeat("-", 51) + " Update Stock " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 51));
         SagaOrchestratorApplication.logger.info("Update Stock " + SagaOrchestratorApplication.sagaId + "\n");
         commandGateway.send(new TriggerStockUpdateCommand(stockId, "", article, quantity));
     }
 
     @SagaEventHandler(associationProperty = "paymentId")
     public void on(OrderCompensateTriggeredEvent event) {
-        System.out.println(repeat("-", 59) + " Abort Payment : Not enough money " + repeat("-", 59));
+        System.out.println(repeat("-", 59) +
+                " Abort Payment : Not enough money " + repeat("-", 59));
         SagaOrchestratorApplication.logger.info("Abort Payment " + SagaOrchestratorApplication.sagaId + "\n");
-        System.out.println("\n" + repeat("-", 65) + " Compensate the Order " + repeat("-", 65));
+        System.out.println("\n" + repeat("-", 65) +
+                " Compensate the Order " + repeat("-", 65));
 
         commandGateway.send(new DeleteOrderCommand(orderId, user, article, quantity, price));
         System.out.println("\nOrder " + orderId + " deleted.\n");
-        System.out.println(repeat("-", 67) + " Order Compensated " + repeat("-", 67));
+        System.out.println(repeat("-", 67) +
+                " Order Compensated " + repeat("-", 67));
         SagaOrchestratorApplication.logger.info("Order Compensated " + SagaOrchestratorApplication.sagaId + "\n");
     }
 
     @SagaEventHandler(associationProperty = "stockId")
     public void on(CompensatePaymentTriggeredEvent event) {
-        System.out.println(repeat("-", 59) + " Abort Stock : Not enough articles " + repeat("-", 59));
+        System.out.println(repeat("-", 59) +
+                " Abort Stock : Not enough articles " + repeat("-", 59));
         SagaOrchestratorApplication.logger.info("Abort Stock " + SagaOrchestratorApplication.sagaId + "\n");
-        System.out.println("\n" + repeat("-", 57) + " Compensate the Payment and the Order " + repeat("-", 57));
+        System.out.println("\n" + repeat("-", 57) +
+                " Compensate the Payment and the Order " + repeat("-", 57));
 
         commandGateway.send(new RefundPaymentCommand(paymentId, accountId, user, amount));
         System.out.println("\nPayment Id =      " + paymentId);
         System.out.println("Username =        " + user);
         System.out.println("Money refunded =  " + price + "\n");
-        System.out.println(repeat("-", 66) + " Payment Compensated " + repeat("-", 66));
+        System.out.println(repeat("-", 66) +
+                " Payment Compensated " + repeat("-", 66));
         SagaOrchestratorApplication.logger.info("Payment Compensated " + SagaOrchestratorApplication.sagaId + "\n");
 
         commandGateway.send(new DeleteOrderCommand(orderId, user, article, quantity, price));
@@ -111,7 +122,6 @@ public class OrderSaga {
         SagaOrchestratorApplication.logger.info("Order Compensated " + SagaOrchestratorApplication.sagaId + "\n");
     }
 
-
     /**
      * This method will anyway end the Saga, but when something went wrong.
      * @param event
@@ -119,7 +129,8 @@ public class OrderSaga {
     @EndSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void on(EndSagaOrderTriggeredEvent event) {
-        System.out.println("\n" + repeat("-", 53) + " End Saga " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
+        System.out.println("\n" + repeat("-", 53) + " End Saga " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
         SagaOrchestratorApplication.logger.info("End Saga " + SagaOrchestratorApplication.sagaId + "\n");
 
     }
@@ -128,7 +139,8 @@ public class OrderSaga {
     public void on(SagaOrderEndedEvent event) {
         isOrderCompensated = true;
         if (isPaymentCompensated == null || isPaymentCompensated) {
-            System.out.println("\n" + repeat("-", 53) + " End Saga " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
+            System.out.println("\n" + repeat("-", 53) + " End Saga " +
+                    SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
             SagaOrchestratorApplication.logger.info("End Saga " + SagaOrchestratorApplication.sagaId + "\n");
             end();
         }
@@ -141,8 +153,10 @@ public class OrderSaga {
         System.out.println("\nStock Id =" + repeat(" ", 25) + event.getStockId());
         System.out.println("Article =" + repeat(" ", 26) + event.getArticle());
         System.out.println("Quantity of the ordered article =  " + +event.getQuantity());
-        System.out.println("\n" + repeat("-", 51) + " Stock Updated " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 50) + "\n");
-        System.out.println("\n" + repeat("-", 53) + " End Saga " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
+        System.out.println("\n" + repeat("-", 51) + " Stock Updated " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 50) + "\n");
+        System.out.println("\n" + repeat("-", 53) + " End Saga " +
+                SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
         SagaOrchestratorApplication.logger.info("End Saga " + SagaOrchestratorApplication.sagaId + "\n");
 
     }
@@ -151,7 +165,8 @@ public class OrderSaga {
     public void on(SagaPaymentEndedEvent event) {
         isPaymentCompensated = true;
         if (isOrderCompensated) {
-            System.out.println("\n" + repeat("-", 53) + " End Saga " + SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
+            System.out.println("\n" + repeat("-", 53) + " End Saga "
+                    + SagaOrchestratorApplication.sagaId + " " + repeat("-", 53) + "\n\n");
             SagaOrchestratorApplication.logger.info("End Saga " + SagaOrchestratorApplication.sagaId + "\n");
             end();
         }

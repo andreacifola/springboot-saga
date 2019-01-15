@@ -26,12 +26,17 @@ public class PaymentServiceApplication {
         SpringApplication.run(PaymentServiceApplication.class, args);
 
         String accountId = UUID.randomUUID().toString();
-        bankAccountEntityRepository.deleteAll();
+        //bankAccountEntityRepository.deleteAll();
+        BankAccountEntity alice = new BankAccountEntity(accountId, "Alice", "350$");
+        if (bankAccountEntityRepository.findByUser("Alice") == null) {
+            bankAccountEntityRepository.save(alice);
+        } else {
+            bankAccountEntityRepository.deleteByUser("Alice");
+            bankAccountEntityRepository.save(alice);
+        }
 
         //TODO eliminare quando è finito
         paymentEntityRepository.deleteAll();
 
-        BankAccountEntity alice = new BankAccountEntity(accountId, "Alice", "350$");
-        bankAccountEntityRepository.save(alice);
     }
 }

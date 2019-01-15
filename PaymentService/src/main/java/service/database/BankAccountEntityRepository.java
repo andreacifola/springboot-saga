@@ -9,4 +9,6 @@ public interface BankAccountEntityRepository extends MongoRepository<BankAccount
     BankAccountEntity findByUser(String user);
 
     BankAccountEntity findByMoneyAccount(String moneyAccount);
+
+    void deleteByUser(String user);
 }

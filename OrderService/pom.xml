@@ -11,6 +11,11 @@
 
     <artifactId>OrderService</artifactId>
     <packaging>jar</packaging>
+
+    <properties>
+        <skip.assembly>false</skip.assembly>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

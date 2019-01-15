@@ -1,10 +1,8 @@
 package service.database;
 
 
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-@NoArgsConstructor
 public class WarehouseEntity {
 
     @Id
@@ -13,6 +11,9 @@ public class WarehouseEntity {
     private String articleId;
     private String article;
     private Integer availability;
+
+    public WarehouseEntity() {
+    }
 
     public WarehouseEntity(String articleId, String article, Integer availability) {
         this.articleId = articleId;

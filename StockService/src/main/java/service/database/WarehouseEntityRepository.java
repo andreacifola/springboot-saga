@@ -9,4 +9,6 @@ public interface WarehouseEntityRepository extends MongoRepository<WarehouseEnti
     WarehouseEntity findByArticle(String article);
 
     WarehouseEntity findByAvailability(Integer availability);
+
+    void deleteByArticle(String article);
 }
