@@ -11,9 +11,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
+import service.coreapi.OrderDeletedEvent;
 import service.coreapi.QueryHandlerOrderSavedEvent;
-import service.coreapi.QueryHandlerPaymentAbortedEvent;
-import service.coreapi.QueryHandlerStockAbortedEvent;
 import service.coreapi.QueryHandlerStockSavedEvent;
 import service.database.GlobalInformation;
 import service.database.GlobalInformationRepository;
@@ -69,21 +68,15 @@ public class QueryHandlerConsumer {
     }
 
     @EventHandler
-    public void on(QueryHandlerPaymentAbortedEvent event) {
+    public void on(OrderDeletedEvent event) {
         GlobalInformation info = repository.findByOrderId(orderId);
-        if (info != null)
+        if (info != null) {
             repository.delete(info);
-        else
+            System.out.println("\nSomwthing went wrong during the saga.\nStarted the compensating actions." +
+                    "\nGlobal information deleted.\n");
+        } else {
             System.out.println("There are no orders to delete!");
-    }
-
-    @EventHandler
-    public void on(QueryHandlerStockAbortedEvent event) {
-        GlobalInformation info = repository.findByOrderId(orderId);
-        if (info != null)
-            repository.delete(info);
-        else
-            System.out.println("There are no orders to delete!");
+        }
     }
 
     @Bean

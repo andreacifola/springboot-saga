@@ -12,14 +12,12 @@ import static org.junit.Assert.assertNull;
 
 
 public class OrderTest {
+
     private AggregateTestFixture<Order> fixture;
-    //private FixtureConfiguration<Order> fixture; //version 4.0.3
 
     @Before
-
     public void setUp() throws Exception {
-        fixture = new AggregateTestFixture<>(Order.class); //version 3.4.1
-        //fixture = new AggregateTestFixture<>(Order.class); //version 4.0.3
+        fixture = new AggregateTestFixture<>(Order.class);
     }
 
     @Test

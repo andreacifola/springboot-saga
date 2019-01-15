@@ -31,7 +31,7 @@ public class StockServiceApplication {
         //TODO eliminare quando è finito
         stockEntityRepository.deleteAll();
 
-        WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 23);
+        WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 0);
         warehouseEntityRepository.save(wareHouseEntity);
     }
 }

@@ -19,7 +19,7 @@ import service.coreapi.*;
 public class SagaOrderConsumer {
 
     private final CommandGateway commandGateway;
-    private String orderId;
+    public static String orderID;
 
     public SagaOrderConsumer(CommandGateway commandGateway) {
         this.commandGateway = commandGateway;
@@ -28,7 +28,7 @@ public class SagaOrderConsumer {
     @EventHandler
     public void on(OrderCreatedEvent event) {
 
-        this.orderId = event.getOrderId();
+        orderID = event.getOrderId();
 
         commandGateway.send(new StartSagaCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
@@ -43,10 +43,6 @@ public class SagaOrderConsumer {
 
         commandGateway.send(new EndSagaOrderCommand(event.getOrderId(),
                 event.getUser(), event.getArticle(), event.getQuantity(), event.getPrice()));
-    }
-
-    public String getOrderId() {
-        return orderId;
     }
 
     @Bean

@@ -12,8 +12,8 @@ class QueryHandlerSaveStockCommand(@TargetAggregateIdentifier val stockId: Strin
                                    val article: String, val quantity: Int, val availability: Int)
 class QueryHandlerStockSavedEvent(val stockId: String, val articleId: String, val article: String, val quantity: Int, val availability: Int)
 
-class QueryHandlerAbortPaymentCommand(@TargetAggregateIdentifier val orderId: String)
-class QueryHandlerPaymentAbortedEvent(@TargetAggregateIdentifier val orderId: String)
+class DeleteOrderCommand(@TargetAggregateIdentifier val orderId: String, val user: String,
+                         val article: String, val quantity: Int, val price: String)
 
-class QueryHandlerAbortStockCommand(@TargetAggregateIdentifier val orderId: String)
-class QueryHandlerStockAbortedEvent(@TargetAggregateIdentifier val orderId: String)
+class OrderDeletedEvent(val orderId: String, val user: String,
+                        val article: String, val quantity: Int, val price: String)

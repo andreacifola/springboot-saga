@@ -5,38 +5,37 @@ import org.junit.Before;
 import org.junit.Test;
 import service.coreapi.*;
 
-
 public class OrderSagaTest {
-
 
     private SagaTestFixture<OrderSaga> fixture;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         fixture = new SagaTestFixture<>(OrderSaga.class);
     }
 
     @Test
-    public void testPaymentRequest() throws Exception {
+    public void testStartSaga() {
         fixture.givenNoPriorActivity()
                 .whenPublishingA(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .expectActiveSagas(1)
-                .expectDispatchedCommands(new TriggerPaymentCommand("1sd3gg54", "5555", "Alice", "30$"));
+                .expectActiveSagas(1);
     }
 
     @Test
-    public void testStockUpdatingAfterPayment() throws Exception {
+    public void testEndSaga() {
         fixture.givenAPublished(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .whenPublishingA(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
-                .expectDispatchedCommands(new TriggerStockUpdateCommand("45g4ds3", "9876", "shirt", 2));
-    }
-
-    @Test
-    public void testEndSagaAfterStockUpdated() throws Exception {
-        fixture.givenAPublished(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
-                .andThenAPublished(new PaymentTriggeredEvent("1sd3gg54", "5555", "Alice", "30$"))
-                .whenPublishingA(new StockUpdateTriggeredEvent("45g4ds3", "9876", "shirt", 2))
-                .expectActiveSagas(0)
+                .andThenAPublished(new StockUpdateEnabledEvent("3456", "0987", "Alice", "30$"))
+                .whenPublishingA(new StockSagaEndedEvent("3456", "456", "shirt", 2))
                 .expectNoDispatchedCommands();
     }
+
+    @Test
+    public void testEndSagaWithCompensation() {
+        fixture.givenAPublished(new SagaStartedEvent("1234", "Alice", "shirt", 2, "30$"))
+                .andThenAPublished(new StockUpdateEnabledEvent("3456", "0987", "Alice", "30$"))
+                .andThenAPublished(new CompensatePaymentTriggeredEvent("5678", "456", "shirt", 2))
+                .whenPublishingA(new OrderCompensateTriggeredEvent("3456", "0987", "shirt", "30$"))
+                .expectNoDispatchedCommands();
+    }
+
 }

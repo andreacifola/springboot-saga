@@ -30,13 +30,9 @@ public class QueryHandler {
     }
 
     @CommandHandler
-    public void handle(QueryHandlerAbortPaymentCommand command) {
-        apply(new QueryHandlerPaymentAbortedEvent(command.getOrderId()));
-    }
-
-    @CommandHandler
-    public void handle(QueryHandlerAbortStockCommand command) {
-        apply(new QueryHandlerStockAbortedEvent(command.getOrderId()));
+    public void handle(DeleteOrderCommand command) {
+        apply(new OrderDeletedEvent(command.getOrderId(), command.getUser(),
+                command.getArticle(), command.getQuantity(), command.getPrice()));
     }
 
 
@@ -54,12 +50,7 @@ public class QueryHandler {
     }
 
     @EventSourcingHandler
-    public void on(QueryHandlerPaymentAbortedEvent event) {
-
-    }
-
-    @EventSourcingHandler
-    public void on(QueryHandlerStockAbortedEvent event) {
+    public void on(OrderDeletedEvent event) {
 
     }
 }
