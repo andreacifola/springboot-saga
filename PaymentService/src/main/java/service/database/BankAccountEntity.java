@@ -3,6 +3,9 @@ package service.database;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * This class is useful to store bank accounts in Mongo db.
+ */
 public class BankAccountEntity {
 
     @Id

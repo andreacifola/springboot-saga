@@ -21,6 +21,8 @@ public class Stock {
     public Stock() {
     }
 
+    //This methods annotated with @CommandHandler are used to launch an event.
+
     @CommandHandler
     public Stock(TriggerStockUpdateCommand command) {
         apply(new StockUpdateTriggeredEvent(command.getStockId(), command.getArticleId(), command.getArticle(), command.getQuantity()));

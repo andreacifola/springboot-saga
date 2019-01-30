@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    //Configuration for axon event storage
+    //Configuration for axon event storage.
     @Bean
     public EventStorageEngine eventStorageEngine() {
         return new InMemoryEventStorageEngine();
     }
 
-    // Configurations for amqp
+    // Configurations for amqp.
     @Bean
     public Exchange eventsExchange() {
         return ExchangeBuilder.fanoutExchange("Try").build();

@@ -7,14 +7,19 @@ import java.util.logging.SimpleFormatter;
 
 public class LogFile {
 
+    /**
+     * This method allows to create a log file where we can write all the SagaOrchestator events.
+     *
+     * @return
+     */
     public static Logger writeLogFile() {
         Logger logger = Logger.getLogger("Log");
         FileHandler fh;
 
         try {
 
-            // This block configure the logger with handler and formatter
-            // The second parameter allow us to append on existing file the messages
+            //This block configure the logger with handler and formatter
+            //The second parameter allow us to append on existing file the messages
             fh = new FileHandler("/Users/andreacifola/Desktop/Progetto Tesi/springboot-saga/SagaOrchestrator/LogFile.log", true);
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();

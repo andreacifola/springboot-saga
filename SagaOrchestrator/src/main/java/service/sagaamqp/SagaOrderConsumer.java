@@ -17,6 +17,9 @@ import service.coreapi.*;
 import java.util.UUID;
 
 
+/**
+ * This class receives the events from the OrderService
+ */
 @ProcessingGroup("sagaOrderEvents")
 @RestController
 public class SagaOrderConsumer {
@@ -28,6 +31,14 @@ public class SagaOrderConsumer {
         this.commandGateway = commandGateway;
     }
 
+    /**
+     * When SagaOrchestrator receives the OrderCreatedEvent, it starts the saga and send to the OrderService the
+     * StartSagaCommand in order to allow it to store the Order; besides it sends the QueryHandlerSaveOrderCommand
+     * to the QueryHandler in order to allow it to store the first wave of global information.
+     *
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(OrderCreatedEvent event) {
 
@@ -50,6 +61,12 @@ public class SagaOrderConsumer {
 
     }
 
+    /**
+     * When SagaOrchestrator receives the EndSagaOrderTriggeredEvent, it means that everything goes well so
+     * it can end the saga.
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(EndSagaOrderTriggeredEvent event) {
         commandGateway.send(new EndSagaOrderCommand(event.getOrderId(),
@@ -64,6 +81,12 @@ public class SagaOrderConsumer {
         System.out.println("Price =     " + event.getPrice() + "\n");
     }
 
+    /**
+     * This is the classic method used by Axon to listen messages
+     * from the specified Queue, in this case the OrderSaga queue.
+     * @param serializer
+     * @return
+     */
     @Bean
     public SpringAMQPMessageSource sagaOrderQueueMessageSource(Serializer serializer) {
         return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {

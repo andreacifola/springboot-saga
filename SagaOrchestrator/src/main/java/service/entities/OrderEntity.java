@@ -8,8 +8,6 @@ public class OrderEntity {
     private String article;
     private Integer quantity;
     private String price;
-    //private String date;
-    //private String hour;
 
 
     public OrderEntity() {

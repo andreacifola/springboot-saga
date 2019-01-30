@@ -1,9 +1,6 @@
 package service.entities;
 
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class BankAccountEntity {
 
     private String accountId;
@@ -14,6 +11,9 @@ public class BankAccountEntity {
         this.accountId = accountId;
         this.user = user;
         this.moneyAccount = moneyAccount;
+    }
+
+    public BankAccountEntity() {
     }
 
     public String getAccountId() {

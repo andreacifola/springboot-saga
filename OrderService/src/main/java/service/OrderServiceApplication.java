@@ -29,6 +29,7 @@ public class  OrderServiceApplication {
         //TODO eliminare quando è finito
         orderEntityRepository.deleteAll();
 
+        //Order sends the first command that starts the saga in the SagaOrchestrator
         commandGateway.send(new CreateOrderCommand(orderId, "Alice", "shirt", 2, "30$"));
     }
 }

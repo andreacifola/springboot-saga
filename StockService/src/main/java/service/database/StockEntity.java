@@ -1,10 +1,12 @@
 package service.database;
 
 
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
-@NoArgsConstructor
+
+/**
+ * This class is useful to store stock elements in Mongo db.
+ */
 public class StockEntity {
 
     @Id
@@ -14,6 +16,9 @@ public class StockEntity {
     private String articleId;
     private String article;
     private Integer quantity;
+
+    public StockEntity() {
+    }
 
     public StockEntity(String stockId, String articleId, String article, Integer quantity) {
         this.stockId = stockId;

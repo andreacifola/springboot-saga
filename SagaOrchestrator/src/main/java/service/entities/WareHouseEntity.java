@@ -1,9 +1,6 @@
 package service.entities;
 
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class WareHouseEntity {
 
     private String article;
@@ -12,6 +9,9 @@ public class WareHouseEntity {
     public WareHouseEntity(String article, Integer available) {
         this.article = article;
         this.available = available;
+    }
+
+    public WareHouseEntity() {
     }
 
     public String getArticle() {

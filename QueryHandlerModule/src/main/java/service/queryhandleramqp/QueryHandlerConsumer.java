@@ -17,13 +17,13 @@ import service.coreapi.QueryHandlerStockSavedEvent;
 import service.database.GlobalInformation;
 import service.database.GlobalInformationRepository;
 
-//import service.coreapi.StockUpdateTriggeredEvent;
 
+/**
+ * This class receives the events from the SagaOrchestrator and listens to all the messages useful for itself
+ */
 @ProcessingGroup("queryHandlerEvents")
 @RestController
 public class QueryHandlerConsumer {
-
-    //TODO ridare i nomi corretti ai metodi degli eventi (solo con questi nomi riceve messaggi dall'orchestratore)
 
     private final GlobalInformationRepository repository;
 
@@ -37,6 +37,13 @@ public class QueryHandlerConsumer {
         this.repository = repository;
     }
 
+    /**
+     * When QueryHandler receives the QueryHandlerOrderSavedEvent, it saves in the db
+     * the first wave of information that comes from OrderService.
+     *
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(QueryHandlerOrderSavedEvent event) {
         //TODO rimuovere alla fine
@@ -52,10 +59,15 @@ public class QueryHandlerConsumer {
         System.out.println(info);
     }
 
+    /**
+     * When QueryHandler receives the QueryHandlerOrderSavedEvent, it saves in the db
+     * the second wave of information that comes from StockService.
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(QueryHandlerStockSavedEvent event) {
         GlobalInformation info = repository.findByOrderId(orderId);
-        //TODO passare l'availability dallo stockService
         info.setAvailability(event.getAvailability());
         repository.save(info);
 
@@ -67,6 +79,12 @@ public class QueryHandlerConsumer {
                 (event.getAvailability() - event.getQuantity()) + " " + article + "s in the warehouse. >>\n");
     }
 
+    /**
+     * When QueryHandler receives the QueryHandlerOrderSavedEvent, it means that the saga was interrupted in
+     * some point. So we need to delete the global information in the db.
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(OrderDeletedEvent event) {
         GlobalInformation info = repository.findByOrderId(orderId);
@@ -79,6 +97,12 @@ public class QueryHandlerConsumer {
         }
     }
 
+    /**
+     * This is the classic method used by Axon to listen messages
+     * from the specified Queue, in this case the QueryHandler queue.
+     * @param serializer
+     * @return
+     */
     @Bean
     public SpringAMQPMessageSource queryHandlerQueueMessageSource(Serializer serializer) {
         return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {

@@ -20,6 +20,8 @@ public class Payment {
 
     }
 
+    //This methods annotated with @CommandHandler are used to launch an event.
+
     @CommandHandler
     public Payment(TriggerPaymentCommand command) {
         apply(new PaymentTriggeredEvent(command.getPaymentId(),

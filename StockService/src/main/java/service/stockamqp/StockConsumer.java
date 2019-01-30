@@ -43,6 +43,16 @@ public class StockConsumer {
         this.warehouseEntityRepository = warehouseEntityRepository;
     }
 
+    /**
+     * When StockService receives the StockUpdateTriggeredEvent, first of all it search the right article in the
+     * warehouse db. Then it checks if the warehouse has enough articles for the order: if yes, it decreases
+     * the number of articles for the wanted article, prints the transaction, save the stock in the db and
+     * sends the StockUpdateCommand to the SagaOrchestrator to continue with the saga. Otherwise  it does not do
+     * the transaction and sends to the SagaOrchestrator the AbortStockCommand to start the end of the saga.
+     *
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(StockUpdateTriggeredEvent event) {
 
@@ -77,6 +87,12 @@ public class StockConsumer {
         }
     }
 
+    /**
+     * This is the classic method used by Axon to listen messages
+     * from the specified Queue, in this case the Stock queue.
+     * @param serializer
+     * @return
+     */
     @Bean
     public SpringAMQPMessageSource stockQueueMessageSource(Serializer serializer) {
         return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {

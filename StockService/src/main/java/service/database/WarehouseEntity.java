@@ -3,6 +3,9 @@ package service.database;
 
 import org.springframework.data.annotation.Id;
 
+/**
+ * This class is useful to store warehouse elements in Mongo db.
+ */
 public class WarehouseEntity {
 
     @Id

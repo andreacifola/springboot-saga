@@ -22,6 +22,9 @@ import service.database.PaymentEntityRepository;
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 
+/**
+ * This class receives the events from the SagaOrchestrator and listens to all the messages useful for itself.
+ */
 @ProcessingGroup("paymentEvents")
 @RestController
 public class PaymentConsumer {
@@ -40,6 +43,16 @@ public class PaymentConsumer {
         this.paymentEntityRepository = paymentEntityRepository;
     }
 
+    /**
+     * When PaymentService receives the PaymentTriggeredEvent, first of all it search the right user in the
+     * bank account db. Then it checks if the bank account has enough money for the order: if yes, it decreases
+     * the value of money account for the bank account, prints the transaction, save the payment in the db and
+     * sends the DoPaymentCommand to the SagaOrchestrator to continue with the saga. Otherwise  it does not do
+     * the transaction and sends to the SagaOrchestrator the AbortPaymentCommand to start the end of the saga.
+     *
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(PaymentTriggeredEvent event) {
 
@@ -72,6 +85,13 @@ public class PaymentConsumer {
         }
     }
 
+    /**
+     * When PaymentService receives the PaymentTriggeredEvent, it means that the StockService has aborted its
+     * transaction. So we need to refund the bank user in the bank account. Then we send the
+     * TriggerEndSagaPaymentCommand to advise the SagaOrchestrator that we are done with the compensating action.
+     * @param event
+     * @return
+     */
     @EventHandler
     public void on(PaymentRefundedEvent event) {
 
@@ -95,6 +115,12 @@ public class PaymentConsumer {
         commandGateway.send(new TriggerEndSagaPaymentCommand(event.getPaymentId(), user.getAccountId(), event.getUser(), event.getAmount()));
     }
 
+    /**
+     * This is the classic method used by Axon to listen messages
+     * from the specified Queue, in this case the Payment queue.
+     * @param serializer
+     * @return
+     */
     @Bean
     public SpringAMQPMessageSource paymentQueueMessageSource(Serializer serializer) {
         return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {

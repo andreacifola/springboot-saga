@@ -36,7 +36,8 @@ public class OrderSaga {
     private Boolean isOrderCompensated = false;
 
     /**
-     * This is the first event of the Saga, triggered when a new order is executed.
+     * This is the first event of the Saga, triggered when a new order is executed. We save in the log file the event
+     * and at the end we send the TriggerPaymentCommand to the PaymentService to continue with the Saga.
      * @param event
      */
     @StartSaga
@@ -47,14 +48,14 @@ public class OrderSaga {
                 SagaOrchestratorApplication.sagaId + " " + repeat("-", 50));
         SagaOrchestratorApplication.logger.info("Order Created " + SagaOrchestratorApplication.sagaId + "\n");
 
-        // Saga allows us to save the state and to pass this state from a service to another
+        //Saga allows us to save the state and to pass this state from a service to another
         orderId = event.getOrderId();
         user = event.getUser();
         article = event.getArticle();
         quantity = event.getQuantity();
         price = event.getPrice();
 
-        // Associate the other services with an Id for all the Saga transaction
+        //Associate the other services with an Id for all the Saga transaction
         paymentId = UUID.randomUUID().toString();
         associateWith("paymentId", paymentId);
         stockId = UUID.randomUUID().toString();
@@ -66,6 +67,12 @@ public class OrderSaga {
         commandGateway.send(new TriggerPaymentCommand(paymentId, "", event.getUser(), event.getPrice()));
     }
 
+    /**
+     * This event is sent by the PaymentService when its transaction goes well. We save in the log file the event
+     * and at the end we send the TriggerStockUpdateCommand to the StockService to continue with the Saga.
+     *
+     * @param event
+     */
     @SagaEventHandler(associationProperty = "paymentId")
     public void on(StockUpdateEnabledEvent event) {
         this.accountId = event.getAccountId();
@@ -85,6 +92,12 @@ public class OrderSaga {
         commandGateway.send(new TriggerStockUpdateCommand(stockId, "", article, quantity));
     }
 
+    /**
+     * This event is sent by the PaymentService when its transaction goes wrong. So we need to start the
+     * compensating action in the OrderService. We save the event in the log file and at the end we send
+     * the DeleteOrderCommand to the OrderService to end with the Saga.
+     * @param event
+     */
     @SagaEventHandler(associationProperty = "paymentId")
     public void on(OrderCompensateTriggeredEvent event) {
         System.out.println(repeat("-", 59) +
@@ -100,6 +113,13 @@ public class OrderSaga {
         SagaOrchestratorApplication.logger.info("Order Compensated " + SagaOrchestratorApplication.sagaId + "\n");
     }
 
+    /**
+     * This event is sent by the StockService when its transaction goes wrong. So we need to start the
+     * compensating actions in the PaymentService and the OrderService. We save the event in the log file
+     * and at the end we send the RefundPaymentCommand and the DeleteOrderCommand to the PaymentService
+     * and the OrderService respectively to end with the Saga.
+     * @param event
+     */
     @SagaEventHandler(associationProperty = "stockId")
     public void on(CompensatePaymentTriggeredEvent event) {
         System.out.println(repeat("-", 59) +
@@ -123,7 +143,8 @@ public class OrderSaga {
     }
 
     /**
-     * This method will anyway end the Saga, but when something went wrong.
+     * This method will anyway end the Saga; the event is sent by the OrderService but when something went wrong.
+     * So it will end the Saga once the OrderService has done with the compensating action
      * @param event
      */
     @EndSaga
@@ -135,6 +156,11 @@ public class OrderSaga {
 
     }
 
+    /**
+     * This event is sent by the StockService and will end the saga only when both the OrderService and
+     * the Payment service have done wiht their compensating actions. It writes the event in the log file.
+     * @param event
+     */
     @SagaEventHandler(associationProperty = "orderId")
     public void on(SagaOrderEndedEvent event) {
         isOrderCompensated = true;
@@ -147,6 +173,11 @@ public class OrderSaga {
 
     }
 
+    /**
+     * This event is sent by the StockService and will end the saga when everything went well and
+     * we haven't done the compensating actions. It writes the event in the log file.
+     * @param event
+     */
     @EndSaga
     @SagaEventHandler(associationProperty = "stockId")
     public void on(StockSagaEndedEvent event) {
@@ -161,6 +192,11 @@ public class OrderSaga {
 
     }
 
+    /**
+     * This event is sent by the PaymentService and will end the saga only when also the OrderService has done
+     * wiht its compensating action. It writes the event in the log file.
+     * @param event
+     */
     @SagaEventHandler(associationProperty = "paymentId")
     public void on(SagaPaymentEndedEvent event) {
         isPaymentCompensated = true;
@@ -172,6 +208,12 @@ public class OrderSaga {
         }
     }
 
+    /**
+     * This method produces a string composed by the same value, repeated as indicated in the value field
+     * @param string
+     * @param value
+     * @return
+     */
     private StringBuilder repeat(String string, Integer value) {
         StringBuilder repeatedString = new StringBuilder(string);
         for (int i = 0; i < value - 1; i++) {

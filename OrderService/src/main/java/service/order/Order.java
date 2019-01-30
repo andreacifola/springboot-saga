@@ -18,6 +18,8 @@ public class Order {
 
     }
 
+    //This methods annotated with @CommandHandler are used to launch an event.
+
     @CommandHandler
     public Order(CreateOrderCommand command) {
         apply(new OrderCreatedEvent(command.getOrderId(), command.getUser(),

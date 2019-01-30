@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    //Configuration for axon event storage with MongoDB
+    //Configuration for axon event storage with MongoDB.
     @Bean
     public EventStorageEngine eventStore(MongoClient client) {
         return new MongoEventStorageEngine(new DefaultMongoTemplate(client, "stockevents"));
     }
 
-    // Configurations for amqp
+    // Configurations for amqp.
     @Bean
     public Exchange eventsExchangeStock() {
         return ExchangeBuilder.fanoutExchange("StockEvents").build();

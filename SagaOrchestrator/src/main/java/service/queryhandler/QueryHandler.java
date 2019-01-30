@@ -20,6 +20,8 @@ public class QueryHandler {
     public QueryHandler() {
     }
 
+    //This methods annotated with @CommandHandler are used to launch an event.
+
     @CommandHandler
     public QueryHandler(QueryHandlerSaveOrderCommand command) {
         apply(new QueryHandlerOrderSavedEvent(command.getOrderId(),

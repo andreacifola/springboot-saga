@@ -1,17 +1,14 @@
 package service.entities;
 
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class PaymentEntity {
 
     private String paymentID;
     private String user;
     private Float amount;
-    //private String date;
-    //private String hour;
 
+    public PaymentEntity() {
+    }
 
     public PaymentEntity(String paymentID, String user, Float amount) {
         this.paymentID = paymentID;

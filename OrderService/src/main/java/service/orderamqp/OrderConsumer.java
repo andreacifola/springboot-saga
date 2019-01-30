@@ -20,6 +20,9 @@ import service.database.OrderEntity;
 import service.database.OrderEntityRepository;
 
 
+/**
+ * This class receives the events from the SagaOrchestrator and listens to all the messages useful for itself
+ */
 @ProcessingGroup("orderEvents")
 @RestController
 public class OrderConsumer {
@@ -34,6 +37,12 @@ public class OrderConsumer {
         this.commandGateway = commandGateway;
     }
 
+    /**
+     * When OrderService receives the SagaStartedEvent, it saves in the db the order done and prints the elements.
+     *
+     * @param event
+     * @return
+     */
     @EventHandler
     public OrderEntity on(SagaStartedEvent event) {
 
@@ -49,6 +58,12 @@ public class OrderConsumer {
         return order;
     }
 
+    /**
+     * When OrderService receives the OrderDeletedEvent, it deletes the specified order
+     * from the db and sends the command to end the saga to the SagaOrchestrator.
+     * @param event
+     * @return
+     */
     @EventHandler
     public OrderEntity on(OrderDeletedEvent event) {
 
@@ -75,6 +90,12 @@ public class OrderConsumer {
         System.out.println("Price =     " + order.getPrice()+ "\n");
     }
 
+    /**
+     * This is the classic method used by Axon to listen messages
+     * from the specified Queue, in this case the Order queue.
+     * @param serializer
+     * @return
+     */
     @Bean
     public SpringAMQPMessageSource orderQueueMessageSource(Serializer serializer) {
         return new SpringAMQPMessageSource(new DefaultAMQPMessageConverter(serializer)) {

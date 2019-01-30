@@ -2,6 +2,9 @@ package service.database;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+/**
+ * This interface implements all the methods that we need to query the global information db.
+ */
 public interface GlobalInformationRepository extends MongoRepository<GlobalInformation, String> {
 
     GlobalInformation findByOrderId(String orderId);

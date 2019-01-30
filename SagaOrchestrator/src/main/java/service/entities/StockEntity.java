@@ -1,9 +1,6 @@
 package service.entities;
 
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class StockEntity {
 
     private String articleID;
@@ -14,6 +11,9 @@ public class StockEntity {
         this.articleID = articleID;
         this.article = article;
         this.quantity = quantity;
+    }
+
+    public StockEntity() {
     }
 
     public String getArticleID() {

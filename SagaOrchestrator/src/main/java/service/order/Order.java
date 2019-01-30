@@ -22,6 +22,8 @@ public class Order {
 
     }
 
+    //This methods annotated with @CommandHandler are used to launch an event.
+
     @CommandHandler
     public Order(StartSagaCommand cmd) {
         apply(new SagaStartedEvent(cmd.getOrderId(), cmd.getUser(), cmd.getArticle(), cmd.getQuantity(), cmd.getPrice()));
