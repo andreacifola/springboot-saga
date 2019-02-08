@@ -27,13 +27,10 @@ public class StockServiceApplication {
 
         String articleId = UUID.randomUUID().toString();
         //warehouseEntityRepository.deleteAll();
-        WarehouseEntity wareHouseEntity = new WarehouseEntity(articleId, "shirt", 23);
-        if (warehouseEntityRepository.findByArticle("shirt") == null) {
-            warehouseEntityRepository.save(wareHouseEntity);
-        } else {
-            warehouseEntityRepository.deleteByArticle("shirt");
-            warehouseEntityRepository.save(wareHouseEntity);
-        }
+        WarehouseEntity warehouseEntity = warehouseEntityRepository.findByArticle("shirt");
+        if (warehouseEntity != null)
+            warehouseEntityRepository.delete(warehouseEntity);
+
 
         //TODO eliminare quando è finito
         stockEntityRepository.deleteAll();

@@ -22,6 +22,8 @@ import service.database.StockEntityRepository;
 import service.database.WarehouseEntity;
 import service.database.WarehouseEntityRepository;
 
+import java.util.UUID;
+
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 
@@ -55,6 +57,9 @@ public class StockConsumer {
      */
     @EventHandler
     public void on(StockUpdateTriggeredEvent event) {
+
+        if (warehouseEntityRepository.findByArticle("shirt") == null)
+            warehouseEntityRepository.save(new WarehouseEntity(UUID.randomUUID().toString(), "shirt", 230));
 
         WarehouseEntity warehouseEntity = warehouseEntityRepository.findByArticle("shirt");
 

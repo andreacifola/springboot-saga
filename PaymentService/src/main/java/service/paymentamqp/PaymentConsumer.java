@@ -19,6 +19,8 @@ import service.database.BankAccountEntityRepository;
 import service.database.PaymentEntity;
 import service.database.PaymentEntityRepository;
 
+import java.util.UUID;
+
 import static org.axonframework.commandhandling.GenericCommandMessage.asCommandMessage;
 
 
@@ -56,8 +58,10 @@ public class PaymentConsumer {
     @EventHandler
     public void on(PaymentTriggeredEvent event) {
 
-        BankAccountEntity user = bankAccountEntityRepository.findByUser(event.getUser());
+        if (bankAccountEntityRepository.findByUser(event.getUser()) == null)
+            bankAccountEntityRepository.save(new BankAccountEntity(UUID.randomUUID().toString(), "Alice", "3500$"));
 
+        BankAccountEntity user = bankAccountEntityRepository.findByUser(event.getUser());
         Integer moneyAccount = Integer.valueOf(user.getMoneyAccount().substring(0, user.getMoneyAccount().length() - 1));
         Integer price = Integer.valueOf(event.getAmount().substring(0, event.getAmount().length() - 1));
 

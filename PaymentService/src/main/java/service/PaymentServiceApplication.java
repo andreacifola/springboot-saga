@@ -27,13 +27,9 @@ public class PaymentServiceApplication {
 
         String accountId = UUID.randomUUID().toString();
         //bankAccountEntityRepository.deleteAll();
-        BankAccountEntity alice = new BankAccountEntity(accountId, "Alice", "350$");
-        if (bankAccountEntityRepository.findByUser("Alice") == null) {
-            bankAccountEntityRepository.save(alice);
-        } else {
-            bankAccountEntityRepository.deleteByUser("Alice");
-            bankAccountEntityRepository.save(alice);
-        }
+        BankAccountEntity user = bankAccountEntityRepository.findByUser("Alice");
+        if (user != null)
+            bankAccountEntityRepository.delete(user);
 
         //TODO eliminare quando è finito
         paymentEntityRepository.deleteAll();
